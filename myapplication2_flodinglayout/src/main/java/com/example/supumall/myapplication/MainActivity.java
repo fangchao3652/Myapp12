@@ -118,7 +118,7 @@ public class MainActivity extends ActionBarActivity {
                 src[5] = mBitmap.getHeight();
                 src[6] = src[0];
                 src[7] =  src[5];
- //
+ //fc
                 boolean isEven = i % 2 == 0;
 
                 dst[0] = i * mTranslateDisPerFlod;
