@@ -102,7 +102,7 @@ public class MainActivity extends ActionBarActivity {
             int depth = (int) Math.sqrt(mFlodWidth * mFlodWidth
                     - mTranslateDisPerFlod * mTranslateDisPerFlod) / 2;
 
-            //转换点
+            //转换点f
             float[] src = new float[NUM_OF_POINT];
             float[] dst = new float[NUM_OF_POINT];
 
