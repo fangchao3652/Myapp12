@@ -164,7 +164,7 @@ public class MainActivity extends ActionBarActivity {
                             mSolidPaint);
                     Log.e("fc","00000 "+i);
                 } else {
-                    //绘制阴影fd
+                    //绘制阴影fdf
                     canvas.drawRect(0, 0, mFlodWidth, mBitmap.getHeight(),
                             mShadowPaint);
                     Log.e("fc","111111 "+i);
