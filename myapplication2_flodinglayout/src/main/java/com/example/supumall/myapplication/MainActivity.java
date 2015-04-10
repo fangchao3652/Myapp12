@@ -118,7 +118,7 @@ public class MainActivity extends ActionBarActivity {
                 src[5] = mBitmap.getHeight();
                 src[6] = src[0];
                 src[7] =  src[5];
- //
+ //fc
                 boolean isEven = i % 2 == 0;
 
                 dst[0] = i * mTranslateDisPerFlod;
@@ -164,7 +164,9 @@ public class MainActivity extends ActionBarActivity {
                             mSolidPaint);
                     Log.e("fc","00000 "+i);
                 } else {
+
                     //绘制阴影;
+
                     canvas.drawRect(0, 0, mFlodWidth, mBitmap.getHeight(),
                             mShadowPaint);
                     Log.e("fc","111111 "+i);
