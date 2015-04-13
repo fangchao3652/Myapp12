@@ -1,1 +1,1 @@
-include ':app', ':myapplication2_flodinglayout'
+include ':app', ':myapplication2_flodinglayout', ':pushclient'
