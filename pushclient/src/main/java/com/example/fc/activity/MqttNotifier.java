@@ -1,6 +1,7 @@
 package com.example.fc.activity;
 
 
+import com.example.fc.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 

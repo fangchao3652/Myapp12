@@ -4,15 +4,16 @@ package com.example.fc.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
-import org.androidannotations.annotations.EActivity;
+import com.example.fc.R;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+@EActivity(R.layout.secondt)
 public class SecondActivity extends Activity{
 
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.secondt);
-	}
+	@AfterViews
+   void init(){
+
+    }
+
 }

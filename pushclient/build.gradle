@@ -34,6 +34,6 @@ dependencies {
 apt {
     arguments {
         androidManifestFile variant.outputs[0].processResources.manifestFile
-        resourcePackageName 'com.example'
+        resourcePackageName 'com.example.fc'
     }
 }

@@ -12,6 +12,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.fc.R;
+
 public class PushActivity extends Activity {
 	private String mDeviceID;
     /** Called when the activity is first created. */
