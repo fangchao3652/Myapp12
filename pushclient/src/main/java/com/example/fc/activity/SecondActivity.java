@@ -4,6 +4,8 @@ package com.example.fc.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
+import org.androidannotations.annotations.EActivity;
+
 public class SecondActivity extends Activity{
 
 	

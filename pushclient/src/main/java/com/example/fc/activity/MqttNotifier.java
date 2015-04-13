@@ -15,10 +15,10 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 
-
 /**
  * 消息通知展示
  */
+
 public class MqttNotifier {
     public static final String DEBUG_TAG = "MqttService"; // Log标记
     /**
@@ -28,7 +28,7 @@ public class MqttNotifier {
 
 
     public static void notify(Context context, String json) {
-    	
+
         if (!com.example.fc.activity.StringUtils.isBlank(json)) {
             //json解析
             com.example.fc.activity.NotifierBean mBean = null;
