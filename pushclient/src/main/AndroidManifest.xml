@@ -17,8 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<activity android:name=".activity.SecondActivity_"  android:launchMode="singleTask"></activity>
-<activity android:name=".activity.firstActivity_"  android:launchMode="singleTask"></activity>
+<activity android:name=".activity.SecondActivity"  android:launchMode="singleTask"></activity>
+<activity android:name=".activity.firstActivity"  android:launchMode="singleTask"></activity>
         <service android:name=".activity.PushService" android:label=" Push Notifications Service"></service>
         <service android:name=".activity.MqttService"  android:exported="false"  android:label=" Push Notifications Service"></service>
     </application>

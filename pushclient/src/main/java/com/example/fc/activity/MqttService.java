@@ -32,11 +32,14 @@ import java.util.Locale;
  * 推送服务
  */
 public class MqttService extends Service implements MqttCallback {
+
+    private static final String MQTT_BROKER_TEST = "223.81.244.80"; //测试地址
+
+
     public static final String DEBUG_TAG = "MqttService"; // Log标记
     public static String			MQTT_CLIENT_ID = "Fangchao";
     private static final String MQTT_THREAD_NAME = "MqttService[" + DEBUG_TAG + "]"; // Handler Thread ID
 
-    private static final String MQTT_BROKER_TEST = "192.168.0.183"; //测试地址
     private static final String MQTT_BROKER_ONLINE = "mqtt.supumall.com"; //正式地址
     private static final String MQTT_BROKER = MQTT_BROKER_TEST;
 

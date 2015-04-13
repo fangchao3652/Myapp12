@@ -8,8 +8,12 @@ import com.example.fc.R;
 
 import org.androidannotations.annotations.EActivity;
 
-@EActivity(R.layout.first)
+
 public class firstActivity extends Activity{
 
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.first);
+    }
 }

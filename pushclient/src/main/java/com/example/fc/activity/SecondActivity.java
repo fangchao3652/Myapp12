@@ -8,12 +8,12 @@ import com.example.fc.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
-@EActivity(R.layout.secondt)
-public class SecondActivity extends Activity{
 
-	@AfterViews
-   void init(){
+public class SecondActivity extends Activity {
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.secondt);
     }
-
 }
