@@ -33,7 +33,7 @@ import java.util.Locale;
  */
 public class MqttService extends Service implements MqttCallback {
 
-    private static final String MQTT_BROKER_TEST = "223.81.244.80"; //测试地址
+    private static final String MQTT_BROKER_TEST = "10.1.108.112"; //测试地址
 
 
     public static final String DEBUG_TAG = "MqttService"; // Log标记
