@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/allActivityBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="50dp"
+        android:background="@color/allActivityBackground_normal">
+
+        <LinearLayout
+            android:id="@+id/ll1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!--消息设置模块-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_max"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/default_margin_big"
+                    android:text="@string/setting_set_message"
+                    android:textColor="@color/textColor_default"
+                    android:textSize="@dimen/text_default" />
+            </LinearLayout>
+            <!-- 显示高清图片1 -->
+
+            <RelativeLayout
+                android:id="@+id/setting_open_send"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin_mid"
+                android:layout_marginRight="@dimen/default_margin_mid"
+                android:background="@drawable/function_item_bg"
+                android:clickable="true"
+                android:paddingRight="@dimen/default_margin_big">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:drawablePadding="@dimen/default_margin_big"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="@dimen/default_margin_30"
+                    android:text="@string/setting_open_send"
+                    android:textColor="@color/textColor_gray"
+                    android:textSize="@dimen/text_default" />
+
+                <com.example.view.UISwitchButton
+                    android:id="@+id/switch_open_send"
+                    android:layout_width="32dp"
+                    android:layout_height="15dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+            <!-- 显示标清图片2 -->
+
+            <RelativeLayout
+                android:id="@+id/setting_quiet_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin_mid"
+                android:layout_marginRight="@dimen/default_margin_mid"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/function_item_bg"
+                android:clickable="true"
+                android:paddingRight="@dimen/default_margin_big">
+
+                <TextView
+                    android:id="@+id/tv_M1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:drawablePadding="@dimen/default_margin_big"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="@dimen/default_margin_30"
+                    android:text="@string/setting_quiet_time"
+                    android:textColor="@color/textColor_gray"
+                    android:textSize="@dimen/text_default" />
+
+                <TextView
+                    android:id="@+id/setting_selected_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/default_margin_30"
+                    android:textColor="@color/textColor_gray"
+                    android:textSize="@dimen/text_small" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_right_bg" />
+            </RelativeLayout>
+
+            <!-- 显示图片模块 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin_big"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/default_margin_big"
+                    android:text="@string/setting_show_img"
+                    android:textColor="@color/textColor_default"
+                    android:textSize="@dimen/text_default" />
+            </LinearLayout>
+            <!-- 显示高清图片1 -->
+
+            <RelativeLayout
+                android:id="@+id/setting_showHimg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin_mid"
+                android:layout_marginRight="@dimen/default_margin_mid"
+                android:background="@drawable/function_item_bg"
+                android:clickable="true"
+                android:paddingRight="@dimen/default_margin_big">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:drawablePadding="@dimen/default_margin_big"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="@dimen/default_margin_30"
+                    android:text="@string/setting_show_Himg"
+                    android:textColor="@color/textColor_gray"
+                    android:textSize="@dimen/text_default" />
+
+                <CheckBox
+                    android:id="@+id/cb_showHimg"
+                    style="@style/checkbox_custom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="false" />
+            </RelativeLayout>
+            <!-- 显示标清图片2 -->
+
+            <RelativeLayout
+                android:id="@+id/setting_showMimg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin_mid"
+                android:layout_marginRight="@dimen/default_margin_mid"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/function_item_bg"
+                android:clickable="true"
+                android:paddingRight="@dimen/default_margin_big">
+
+                <TextView
+                    android:id="@+id/tv_M"
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:drawablePadding="@dimen/default_margin_big"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="@dimen/default_margin_30"
+                    android:text="@string/setting_show_Mimg"
+                    android:textColor="@color/textColor_gray"
+                    android:textSize="@dimen/text_default" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:layout_toRightOf="@id/tv_M"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="@string/setting_save_traffic"
+                    android:textColor="@color/textColor_gray" />
+
+                <CheckBox
+                    android:id="@+id/cb_showMimg"
+                    style="@style/checkbox_custom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="false" />
+            </RelativeLayout>
+            <!-- 不显示图片 -->
+
+            <RelativeLayout
+                android:id="@+id/setting_showNimg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin_mid"
+                android:layout_marginRight="@dimen/default_margin_mid"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/function_item_bg"
+                android:clickable="true"
+                android:paddingRight="@dimen/default_margin_big">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:drawablePadding="@dimen/default_margin_big"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="@dimen/default_margin_30"
+                    android:text="@string/setting_show_Nimg"
+                    android:textColor="@color/textColor_gray"
+                    android:textSize="@dimen/text_default" />
+
+                <CheckBox
+                    android:id="@+id/cb_showNimg"
+                    style="@style/checkbox_custom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="false" />
+            </RelativeLayout>
+
+
+
+
+
+            <!-- 清除缓存 -->
+
+            <RelativeLayout
+                android:id="@+id/setting_removeCache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/default_margin_mid"
+                android:layout_marginLeft="@dimen/default_margin_mid"
+                android:layout_marginRight="@dimen/default_margin_mid"
+                android:layout_marginTop="@dimen/default_margin"
+                android:background="@drawable/function_item_bg"
+                android:clickable="true"
+
+                android:paddingRight="@dimen/default_margin_big">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:drawablePadding="@dimen/default_margin_big"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="@dimen/default_margin_30"
+                    android:text="@string/setting_remove_cache"
+                    android:textColor="@color/textColor_gray"
+                    android:textSize="@dimen/text_default" />
+
+                <TextView
+                    android:id="@+id/setting_tvCache"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="24dp"
+                    android:text="8.99M"
+                    android:textColor="@color/textColor_gray"
+                    android:textSize="@dimen/text_small" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_right_bg" />
+            </RelativeLayout>
+
+
+
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/person_detail_exit"
+            style="@style/TextAppearance.AppCompat.Default.withDifColor"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+          android:layout_alignParentBottom="true"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_below="@+id/ll1"
+            android:layout_marginTop="@dimen/default_margin_max"
+            android:background="@drawable/background_exit"
+            android:text="退出登录"
+
+            />
+    </RelativeLayout>
+</ScrollView>

@@ -1,5 +1,33 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+<!-- Default screen margins, per the Android Design guidelines. -->
+<dimen name="activity_horizontal_margin">16dp</dimen>
+<dimen name="activity_vertical_margin">16dp</dimen>
+<dimen name="default_margin">8dp</dimen>
+<!--默认圆角尺寸-->
+<dimen name="radius_default">2dp</dimen>
+<!--字体默认尺寸-->
+<dimen name="text_title">18sp</dimen>
+<dimen name="text_default">15sp</dimen>
+<dimen name="text_small">12sp</dimen>
+<dimen name="text_min">10sp</dimen>
+<dimen name="text_max">20sp</dimen>
+<!--滑动菜单-->
+<dimen name="shadow_width">5dp</dimen>
+<dimen name="slidingmenu_offset">100dp</dimen>
+
+
+<!--添加常用margin-->
+<dimen name="default_margin_big">14dp</dimen>
+<dimen name="default_margin_max">18dp</dimen>
+<dimen name="default_margin_30">30dp</dimen>
+<dimen name="default_margin_small">4dp</dimen>
+<dimen name="default_margin_mid">10dp</dimen>
+
+<!--标题栏和底部栏高度-->
+<dimen name="title_height">48dp</dimen>
+
+
 </resources>
+

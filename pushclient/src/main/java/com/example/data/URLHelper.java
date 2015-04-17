@@ -41,8 +41,8 @@ public class URLHelper {
     /**
      * 项目中使用的url
      */
-    public static final String BALSEURL = Constants.ISDEBUG ? TESTURL
-            : ONLINEURL;
+   public static final String BALSEURL ="http://hagal.theadventus.com/MEASystem/api/student/";
+    // public static final String BALSEURL ="http://10.1.108.131/api/student/";
 
     /**
      * 线上数据url
@@ -73,7 +73,7 @@ public class URLHelper {
     public static final String BALSEPUSH = Constants.ISDEBUG ? TESTPUSH
             : ONLINEPUSH;
 
-    public static final String VERSION = "v1/";
+    public static final String VERSION = "";
     public static final String VERSION_3 = "v2/";
     /************************************************************************/
     /* 模块module定义 */
@@ -108,7 +108,7 @@ public class URLHelper {
     public static final String M_GETINDEXTOPGOODS = "GetIndexTopGoods";// 获取促销商品
     public static final String M_GETBANNER = "GetBanner";// 获取引导页
     public static final String M_GETPICLIST = "GetPicList";// 获取焦点图
-    public static final String M_LOGIN = "Login";// 登陆
+    public static final String M_LOGIN = "UserLogin";// 登陆
     public static final String M_REGISTER = "Register";// 注册
     public static final String M_TICKET = "GetTicket";// 获取优惠券可用详情
     public static final String M_GETALLCATEGORY = "GetAllCategory";// 获得所有分类列表
@@ -174,9 +174,9 @@ public class URLHelper {
      */
     public static final String P_SIGN = "sign";
     public static final String P_METHOD = "method";
-    public static final String P_ACCOUNT = "Account";
+    public static final String P_ACCOUNT = "sNo";
     public static final String P_CONTENT = "Content";
-    public static final String P_PASSWORD = "Password";
+    public static final String P_PASSWORD = "sPwd";
     public static final String P_PAGEINDEX = "PageIndex";
     public static final String P_PAGESIZE = "PageSize";
     public static final String P_BARCODE = "Barcode";
@@ -203,6 +203,7 @@ public class URLHelper {
     public static final String P_SHIPPINGID = "ShippingId";
     public static final String P_ORDERINDEX = "OrderIndex";
     public static final String P_CARTITEMS = "CartItems";
+    public static final String P_DeviceId = "deviceId";
 
     public static final String P_CONSIGNEE = "Consignee";
     public static final String P_PROVINCEID = "ProvinceId";
@@ -376,12 +377,14 @@ public class URLHelper {
      * @return
      */
     public static Map<String, String> getLoginParams(String account,
-                                                     String password) {
+                                                     String password,String p_DeviceId) {
         params = new TreeMap<String, String>();
         params.put(P_ACCOUNT, account);
         params.put(P_PASSWORD, password);
-        params.put(P_SIGN, md5(getSign(M_LOGIN, params)));
-        params.put(P_METHOD, M_LOGIN);
+       // params.put(P_SIGN, md5(getSign(M_LOGIN, params)));
+       // params.put(P_METHOD, M_LOGIN);
+        params.put(P_DeviceId, p_DeviceId);
+
         CommonUtils.logWrite("params:", params.toString());
         return params;
     }

@@ -5,7 +5,8 @@ package com.example.greenBean;
 // KEEP INCLUDES - put your custom includes here
 // KEEP INCLUDES END
 
-import cc.android.supu.bean.BaseBean;
+
+import com.example.Bean.BaseBean;
 
 /**
  * Entity mapped to table BRAND_DETAIL_BEAN.

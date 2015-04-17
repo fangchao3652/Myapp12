@@ -2,5 +2,36 @@
     <string name="app_name">PushClient</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">设置</string>
+    <string name="exit_message" translatable="false">再按一次返回桌面</string>
+    <string name="dialog_ok" translatable="false">确定</string>
+    <string name="dialog_cancel" translatable="false">取消</string>
+    <string name="activity_login_logining">登录中...</string>
+    <string name="activity_login_empty">用户名不能为空</string>
+    <string name="activity_login_emptypty_pwd">密码不能为空</string>
+
+
+
+    <!--安静时段-->
+    <string name="starttime">开始时间：%1$d:00</string>
+    <string name="lastime">持续时间: %1$d小时</string>
+    <string name="dialogtime">%1$s:00-%2$s:00</string>
+
+    <string name="dialog_title_clearcatch">确定要清除吗?</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="dialog_clearing">正在清除...</string>
+
+
+    <string name="setting_show_img">图片显示(移动网络下图片质量)</string>
+    <string name="setting_show_Himg">显示高清图片</string>
+    <string name="setting_show_Mimg">显示标清图片</string>
+    <string name="setting_save_traffic">(节省约70%的流量)</string>
+    <string name="setting_show_Nimg">不显示图片</string>
+    <string name="setting_night_theme">夜间模式</string>
+    <string name="setting_big_text">大字号</string>
+    <string name="setting_remove_cache">清除缓存</string>
+    <string name="setting_set_message">消息设置</string>
+    <string name="setting_open_send">开启推送</string>
+    <string name="setting_quiet_time">安静时段</string>
 </resources>

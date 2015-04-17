@@ -15,6 +15,8 @@ import android.os.IBinder;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
+import com.example.common.SharedPreferencesUtils;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -26,6 +28,8 @@ import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -33,41 +37,29 @@ import java.util.Locale;
  */
 public class MqttService extends Service implements MqttCallback {
 
-    private static final String MQTT_BROKER_TEST = "10.1.108.112"; //测试地址
-
-
     public static final String DEBUG_TAG = "MqttService"; // Log标记
-    public static String			MQTT_CLIENT_ID = "Fangchao";
     private static final String MQTT_THREAD_NAME = "MqttService[" + DEBUG_TAG + "]"; // Handler Thread ID
-
-    private static final String MQTT_BROKER_ONLINE = "mqtt.supumall.com"; //正式地址
-    private static final String MQTT_BROKER = MQTT_BROKER_TEST;
-
-    private static final int MQTT_PORT = 1883;                // 服务器推送端口
-
     public static final int MQTT_QOS_0 = 0; //消息投放级别 QOS Level 0 (最多一次，有可能重复或丢失。 )
+    public static int[] qos = {MQTT_QOS_0};//订阅级别
+    private static final int MQTT_KEEP_ALIVE_QOS = MQTT_QOS_0; //心跳包的发送级别默认最低
     public static final int MQTT_QOS_1 = 1; //消息投放级别 QOS Level 1 (至少一次，有可能重复。 )
     public static final int MQTT_QOS_2 = 2; //消息投放级别 QOS Level 2 (只有一次，确保消息只到达一次（用于比较严格的计费系统）。)
-
-    public static final String[] topicFilters = {"Fangchao"};//订阅的主题
-    public static int[] qos = {MQTT_QOS_0};//订阅级别
-
+    private static final String MQTT_BROKER_TEST = "192.168.0.183"; //测试地址@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+    private static final String MQTT_BROKER = MQTT_BROKER_TEST;
+    private static final String MQTT_BROKER_ONLINE = "mqtt.supumall.com"; //正式地址
+    private static final int MQTT_PORT = 1883;                // 服务器推送端口
     private static final int MQTT_KEEP_ALIVE = 4 * 60 * 1000; //心跳包时间，毫秒
     private static final String MQTT_KEEP_ALIVE_TOPIC_FORAMT = "/users/%s/keepalive"; // Topic format for KeepAlives
     private static final byte[] MQTT_KEEP_ALIVE_MESSAGE = {0}; // 心跳包发送内容
-    private static final int MQTT_KEEP_ALIVE_QOS = MQTT_QOS_0; //心跳包的发送级别默认最低
-
     private static final boolean MQTT_CLEAN_SESSION = true; // Start a clean session?
-
     private static final String MQTT_URL_FORMAT = "tcp://%s:%d"; // 推送url格式组装
-
+    private static final String DEVICE_ID_FORMAT = "an_%s"; // 设备id的前缀
+    public static String[] topicFilters = {"Fangchao"};//订阅的主题               @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+    public static String MQTT_CLIENT_ID = "Fangchao";
     private static final String ACTION_START = MQTT_CLIENT_ID + ".START"; // Action to start 启动
     private static final String ACTION_STOP = MQTT_CLIENT_ID + ".STOP"; // Action to stop 停止
     private static final String ACTION_KEEPALIVE = MQTT_CLIENT_ID + ".KEEPALIVE"; // Action to keep alive used by alarm manager保持心跳闹钟使用
     private static final String ACTION_RECONNECT = MQTT_CLIENT_ID + ".RECONNECT"; // Action to reconnect 重新连接
-
-
-    private static final String DEVICE_ID_FORMAT = "an_%s"; // 设备id的前缀
     // Note:设备id限制长度为23个 字符
     // An NPE if you go over that limit
     private boolean mStarted = false; //推送client是否启动
@@ -80,7 +72,22 @@ public class MqttService extends Service implements MqttCallback {
     private MqttTopic mKeepAliveTopic;            // Instance Variable for Keepalive topic
 
     private MqttClient mClient;                    // Mqtt Client
-
+    /**
+     * 网络状态发生变化接收器
+     */
+    private final BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (isNetworkAvailable()) {
+                Log.e(DEBUG_TAG, "网络连接发生了变化--网络连接");
+                reconnectIfNecessary();
+            } else {
+                Log.e(DEBUG_TAG, "网络连接发生了变化--网络断开");
+                stopKeepAlives();
+                mClient = null;
+            }
+        }
+    };
     private AlarmManager mAlarmManager;            //闹钟
     private ConnectivityManager mConnectivityManager; //网络改变接收器
 
@@ -120,6 +127,35 @@ public class MqttService extends Service implements MqttCallback {
         ctx.startService(i);
     }
 
+    public static String[] getTopicFilters() {
+        return topicFilters;
+    }
+
+    public static int[] getQos() {
+        return qos;
+    }
+
+    public static void setQos(int[] qos) {
+        MqttService.qos = qos;
+    }
+
+    public static String[] AddTopic(String topic) {
+        Set<String> topiclist = new TreeSet<>();
+
+        for (int i = 0; i < getTopicFilters().length; i++) {
+            topiclist.add(new String(getTopicFilters()[i]));
+
+        }
+        topiclist.add(new String(topic));
+
+
+        int m = 0;
+
+        SharedPreferencesUtils.getInstance().putTopics(topiclist);//添加到本地
+        topicFilters = topiclist.toArray(topicFilters);
+        return topicFilters;
+    }
+
     /**
      * Initalizes the DeviceId and most instance variables
      * Including the Connection Handler, Datastore, Alarm Manager
@@ -129,7 +165,7 @@ public class MqttService extends Service implements MqttCallback {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("fc","oncreate");
+        Log.e("fc", "oncreate");
         //初始化设备id，长度不能超过23
         mDeviceId = String.format(DEVICE_ID_FORMAT,
                 Secure.getString(getContentResolver(), Secure.ANDROID_ID));
@@ -173,16 +209,16 @@ public class MqttService extends Service implements MqttCallback {
             Log.e(DEBUG_TAG, "推送服务接收到的请求为null！推送服务不执行任何操作");
         } else {
             if (action.equals(ACTION_START)) {
-                       Log.e(DEBUG_TAG, "接收到《启动》推送服务命令");
+                Log.e(DEBUG_TAG, "接收到《启动》推送服务命令");
                 start();
             } else if (action.equals(ACTION_STOP)) {
-                       Log.e(DEBUG_TAG, "接收到《停止》推送服务命令");
+                Log.e(DEBUG_TAG, "接收到《停止》推送服务命令");
                 stop();
             } else if (action.equals(ACTION_KEEPALIVE)) {
-                       Log.e(DEBUG_TAG, "接收到《发送心跳包》推送服务命令");
+                Log.e(DEBUG_TAG, "接收到《发送心跳包》推送服务命令");
                 keepAlive();
             } else if (action.equals(ACTION_RECONNECT)) {
-                       Log.e(DEBUG_TAG, "接收到《重启》推送服务命令");
+                Log.e(DEBUG_TAG, "接收到《重启》推送服务命令");
                 if (isNetworkAvailable()) {
                     reconnectIfNecessary();
                 }
@@ -197,7 +233,7 @@ public class MqttService extends Service implements MqttCallback {
      */
     private synchronized void start() {
         if (mStarted) {
-                   Log.e(DEBUG_TAG, "尝试启动推送服务，但推送服务已经启动");
+            Log.e(DEBUG_TAG, "尝试启动推送服务，但推送服务已经启动");
             return;
         }
 
@@ -215,7 +251,7 @@ public class MqttService extends Service implements MqttCallback {
      */
     private synchronized void stop() {
         if (!mStarted) {
-                   Log.e(DEBUG_TAG, "试图停止推送服务器但是推送服务并没有运行");
+            Log.e(DEBUG_TAG, "试图停止推送服务器但是推送服务并没有运行");
             return;
         }
 
@@ -245,7 +281,7 @@ public class MqttService extends Service implements MqttCallback {
      */
     private synchronized void connect() {
         String url = String.format(Locale.US, MQTT_URL_FORMAT, MQTT_BROKER, MQTT_PORT);
-               Log.e(DEBUG_TAG, "连接推送服务器 设备id：" + mDeviceId + " with URL: " + url);
+        Log.e(DEBUG_TAG, "连接推送服务器 设备id：" + mDeviceId + " with URL: " + url);
         try {
             mClient = new MqttClient(url, mDeviceId, mDataStore);
 
@@ -258,14 +294,15 @@ public class MqttService extends Service implements MqttCallback {
             public void run() {
                 try {
                     mClient.connect();
-
-                    mClient.subscribe(topicFilters, qos);
+                    //fc
+                    topicFilters = castSet2Array(SharedPreferencesUtils.getInstance().getTopics());
+                    mClient.subscribe(topicFilters, new int[topicFilters.length]);
 
                     mClient.setCallback(MqttService.this);
 
                     mStarted = true; // Service is now connected
 
-                           Log.e(DEBUG_TAG, "成功连接推送服务器并启动心跳包闹钟");
+                    Log.e(DEBUG_TAG, "成功连接推送服务器并启动心跳包闹钟");
 
                     startKeepAlives();
                 } catch (MqttException e) {
@@ -273,6 +310,16 @@ public class MqttService extends Service implements MqttCallback {
                 }
             }
         });
+    }
+
+    private String[] castSet2Array(Set<String> topicset) {
+        String topicArray[] = new String[topicset.size()];
+        int n = 0;
+        for (String ss : topicset) {
+            topicArray[n] = ss;
+            n++;
+        }
+        return topicArray;
     }
 
     /**
@@ -328,7 +375,7 @@ public class MqttService extends Service implements MqttCallback {
         if (mStarted && mClient == null) {
             connect();
         } else {
-                   Log.e(DEBUG_TAG, "重新连接没有启动，mStarted:" + String.valueOf(mStarted) + " mClient:" + mClient);
+            Log.e(DEBUG_TAG, "重新连接没有启动，mStarted:" + String.valueOf(mStarted) + " mClient:" + mClient);
         }
     }
 
@@ -356,7 +403,7 @@ public class MqttService extends Service implements MqttCallback {
      */
     private boolean isConnected() {
         if (mStarted && mClient != null && !mClient.isConnected()) {
-                   Log.e(DEBUG_TAG, "判断推送服务已经断开");
+            Log.e(DEBUG_TAG, "判断推送服务已经断开");
         }
 
         if (mClient != null) {
@@ -365,23 +412,6 @@ public class MqttService extends Service implements MqttCallback {
 
         return false;
     }
-
-    /**
-     * 网络状态发生变化接收器
-     */
-    private final BroadcastReceiver mConnectivityReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (isNetworkAvailable()) {
-                       Log.e(DEBUG_TAG, "网络连接发生了变化--网络连接");
-                reconnectIfNecessary();
-            } else {
-                       Log.e(DEBUG_TAG, "网络连接发生了变化--网络断开");
-                stopKeepAlives();
-                mClient = null;
-            }
-        }
-    };
 
     /**
      * 发送保持连接的指定的主题
@@ -398,7 +428,7 @@ public class MqttService extends Service implements MqttCallback {
                     String.format(Locale.US, MQTT_KEEP_ALIVE_TOPIC_FORAMT, mDeviceId));
         }
 
-               Log.e(DEBUG_TAG, "向服务器发送心跳包url： " + MQTT_BROKER);
+        Log.e(DEBUG_TAG, "向服务器发送心跳包url： " + MQTT_BROKER);
 
         MqttMessage message = new MqttMessage(MQTT_KEEP_ALIVE_MESSAGE);
         message.setQos(MQTT_KEEP_ALIVE_QOS);
@@ -431,7 +461,7 @@ public class MqttService extends Service implements MqttCallback {
      */
     @Override
     public void connectionLost(Throwable arg0) {
-               Log.e(DEBUG_TAG, "推送回调函数连接丢失connectionLost方法执行");
+        Log.e(DEBUG_TAG, "推送回调函数连接丢失connectionLost方法执行");
         stopKeepAlives();
 
         mClient = null;
@@ -446,7 +476,7 @@ public class MqttService extends Service implements MqttCallback {
      */
     @Override
     public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-               Log.e(DEBUG_TAG, "收到推送信息如下\n  Topic:\t" + topic +
+        Log.e(DEBUG_TAG, "收到推送信息如下\n  Topic:\t" + topic +
                 "  Message:\t" + new String(mqttMessage.getPayload()) +
                 "  QoS:\t" + mqttMessage.getQos());
 
@@ -455,7 +485,7 @@ public class MqttService extends Service implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-               Log.e(DEBUG_TAG, "推送回调函数deliveryComplete方法执行");
+        Log.e(DEBUG_TAG, "推送回调函数deliveryComplete方法执行");
     }
 
     /**
@@ -464,4 +494,5 @@ public class MqttService extends Service implements MqttCallback {
     private class MqttConnectivityException extends Exception {
         private static final long serialVersionUID = -7385866796799469420L;
     }
+    //{"title": "这是标题","content":"这是内容","type":1}
 }

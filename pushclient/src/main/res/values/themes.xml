@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!--<item name="android:windowAnimationStyle">@style/MyAnimationActivity</item>-->
+    </style>
+
+    <!--正常模式-->
+    <style name="AppTheme.Normal" parent="AppTheme">
+        <item name="allActivityBackground">@color/allActivityBackground_normal</item>
+        <item name="android:textColorPrimary">@color/textColor_default</item>
+        <!--actionbar样式start-->
+        <item name="actionBarStyle">@style/AppTheme.Normal.ActionBar</item>
+        <!--v21新加入的属性-->
+        <item name="colorPrimary">@color/actionBarBackground_normal</item>
+        <item name="colorPrimaryDark">@color/actionBarDarkBackground_normal</item>
+        <!--actionbar样式end-->
+        <!--dialog样式start-->
+        <item name="md_dark_theme">false</item>
+        <!--dialog样式end-->
+        <!--MaterialEditText 样式start-->
+        <item name="baseColor">#666666</item>
+        <item name="primaryColor">#0586ab</item>
+        <item name="errorColor">#e5004b</item>
+        <!--MaterialEditText 样式end-->
+    </style>
+
+    <!--夜间模式-->
+    <style name="AppTheme.Night" parent="AppTheme">
+        <item name="allActivityBackground">@color/allActivityBackground_night</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <!--actionbar样式start-->
+        <item name="actionBarStyle">@style/AppTheme.Night.ActionBar</item>
+        <!--v21新加入的属性-->
+        <item name="colorPrimary">@color/actionBarBackground_night</item>
+        <item name="colorPrimaryDark">@color/actionBarDarkBackground_night</item>
+        <!--actionbar样式end-->
+        <!--dialog样式start-->
+        <item name="md_dark_theme">true</item>
+        <!--dialog样式end-->
+    </style>
+</resources>

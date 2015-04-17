@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:wheel="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="#f5f5f5">
+
+    <LinearLayout
+        android:id="@+id/view_loading_default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <cc.android.supu.view.ProgressWheel
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            wheel:barColor="#E5004A"
+            wheel:barWidth="2dp"
+            wheel:circleRadius="36dp"
+            wheel:progressIndeterminate="true" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Default"
+            android:layout_width="wrap_content"
+            android:textColor="@color/default_text_red"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:textSize="@dimen/text_default"
+            android:layout_height="wrap_content"
+            android:text="努力加载中..." />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_loading_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="150dp"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:clickable="true"
+        android:orientation="vertical">
+
+      <!--  <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_load_error" />-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#969696"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/default_margin_max"
+            android:textSize="@dimen/text_default"
+            android:text="轻击页面进行刷新" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#969696"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/default_margin_max"
+            android:textSize="@dimen/text_default"
+            android:text="@string/error_neterror"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_loading_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="150dp"
+        android:visibility="gone"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+       <!-- <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_load_empty" />-->
+
+        <TextView
+            android:id="@+id/tv_loading_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#969696"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/default_margin_max"
+            android:textSize="@dimen/text_default"
+            android:text="@string/error_empty"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp" />
+    </LinearLayout>
+
+
+</RelativeLayout>

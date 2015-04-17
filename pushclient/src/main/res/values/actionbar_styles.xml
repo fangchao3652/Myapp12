@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--actionBar正常样式-->
+    <style name="AppTheme.Normal.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <!--设置actionbar的背景色-->
+        <item name="background">@drawable/actionbar_bg</item>
+        <!--设置actionbar标题样式-->
+        <item name="titleTextStyle">@style/AppTheme.Normal.ActionBar.TitleTextStyle</item>
+        <!--设置actionbar向上按钮可以显示的元素-->
+        <item name="displayOptions">useLogo|showTitle|homeAsUp|showHome|showCustom</item>
+        <!--设置actionbar返回按钮的图片-->
+        <item name="homeAsUpIndicator">@drawable/actionbar_back</item>
+        <!--设置actionbar显示的logo图片-->
+        <item name="icon">@drawable/actionbar_logo</item>
+        <!--5.0以上actionbar底部阴影-->
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!--actionBar夜间样式-->
+    <style name="AppTheme.Night.ActionBar" parent="Widget.AppCompat.ActionBar">
+        <item name="background">@color/actionBarBackground_night</item>
+        <item name="titleTextStyle">@style/AppTheme.Night.ActionBar.TitleTextStyle</item>
+        <item name="displayOptions">useLogo|showTitle|homeAsUp|showHome|showCustom</item>
+        <item name="homeAsUpIndicator">@drawable/actionbar_back</item>
+        <item name="icon">@drawable/logo</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!--ActionBarTitle正常样式-->
+    <style name="AppTheme.Normal.ActionBar.TitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/textColor_default</item>
+        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+    <!--ActionBarTitle夜间样式-->
+    <style name="AppTheme.Night.ActionBar.TitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+</resources>

@@ -17,6 +17,6 @@
     <string name="error_nostock" translatable="false">抱歉,此商品库存仅余%1$d件</string>
     <!---->
     <string name="error_neterror" translatable="false">您必须连接到无线网络或移动网络下才能访问哦...！</string>
-    <string name="error_empty" translatable="false">额哦...没有找到相关的商品！</string>
+    <string name="error_empty" translatable="false">额哦...没有找到相关的内容！</string>
 
 </resources>

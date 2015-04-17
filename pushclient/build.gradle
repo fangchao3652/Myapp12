@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.example.fc.activity"
+        applicationId "com.example.activity"
         minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
@@ -21,9 +21,11 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+
     compile files('libs/wmqtt.jar')
     compile files('libs/gson-2.2.4.jar')
+    compile project(':Library')
     compile files('libs/org.eclipse.paho.client.mqttv3-1.0.2.jar')
     apt "org.androidannotations:androidannotations:3.2"
     compile 'org.androidannotations:androidannotations-api:3.2'
@@ -34,6 +36,6 @@ dependencies {
 apt {
     arguments {
         androidManifestFile variant.outputs[0].processResources.manifestFile
-        resourcePackageName 'com.example.fc'
+        resourcePackageName 'com.example'
     }
 }

@@ -5,7 +5,7 @@ import android.os.Environment;
 import com.example.application.MyApplication;
 import com.example.common.CommonUtils;
 import com.example.common.StringUtils;
-import com.example.fc.R;
+import com.example.R;
 import com.example.greenBean.BondedAreaBean;
 import com.example.greenBean.BrandDetailBean;
 import com.example.greenBean.CategoryDetailBean;

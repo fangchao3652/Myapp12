@@ -7,6 +7,9 @@ import android.content.SharedPreferences.Editor;
 import com.example.Bean.UserBean;
 import com.example.application.MyApplication;
 
+import java.util.Set;
+import java.util.TreeSet;
+
 
 /**
  * SharedPreferences保存信息共同
@@ -25,7 +28,7 @@ public class SharedPreferencesUtils {
     public static final String LOGIN_USER_NAME = SHAREDPREFERENCES
             + "user_name";// 用户昵称key 默认值“”
     public static final String LOGIN_USER_ACCOUNT = SHAREDPREFERENCES
-            + "user_account";// 用户账号key 默认值“”
+            + "user_account";// 用户name key 默认值“”
 
     public static final String LOGIN_USER_PWD = SHAREDPREFERENCES + "user_pwd";// 用户登录密码key默认值“”
     public static final String ISSAVE_PW = SHAREDPREFERENCES + "issave_pw";// 是否保存密码
@@ -106,6 +109,11 @@ public class SharedPreferencesUtils {
             + "data_synchronous_time";// 基础数据同步时间
 
     public static final String RECOMMEND_POSITION = SHAREDPREFERENCES + "recommend_position";
+
+
+    public static final String TOPIC_SUBSCRIBE = SHAREDPREFERENCES + "topic_subscribe";
+
+
     /************************************************************************/
     /* others */
     /**
@@ -116,8 +124,18 @@ public class SharedPreferencesUtils {
     private static SharedPreferencesUtils mSharedPreferencesUtils = null;
     private static Editor mEditor = null;
 
-    /************************************************************************/
+    /**
+     * ********************************************************************
+     */
     /* Singleton method */
+    private SharedPreferencesUtils() {
+        if (sharedPreferences == null) {
+            sharedPreferences = MyApplication.getInstance()
+                    .getSharedPreferences(SHAREDPREFERENCES,
+                            Context.MODE_PRIVATE);
+            mEditor = sharedPreferences.edit();
+        }
+    }
 
     /**
      * ********************************************************************
@@ -129,18 +147,10 @@ public class SharedPreferencesUtils {
         return mSharedPreferencesUtils;
     }
 
-    private SharedPreferencesUtils() {
-        if (sharedPreferences == null) {
-            sharedPreferences = MyApplication.getInstance()
-                    .getSharedPreferences(SHAREDPREFERENCES,
-                            Context.MODE_PRIVATE);
-            mEditor = sharedPreferences.edit();
-        }
-    }
-
     /************************************************************************/
     /* others method */
     /************************************************************************/
+
     /**
      * 保存用户信息
      *
@@ -148,12 +158,12 @@ public class SharedPreferencesUtils {
      */
     public boolean editUserMessage(UserBean uBean) {
         boolean editflg = false;
-        mEditor.putString(LOGIN_USER_ACCOUNT, uBean.getAccount());
+        mEditor.putString(LOGIN_USER_NAME, uBean.getSName());
         mEditor.putString(LOGIN_USER_ID, uBean.getMemberId());
-        if (!StringUtils.isBlank(uBean.getPassWord())) {
-            mEditor.putString(LOGIN_USER_PWD, uBean.getPassWord());
+        if (!StringUtils.isBlank(uBean.getMemberPwd())) {
+            mEditor.putString(LOGIN_USER_PWD, uBean.getMemberPwd());
         }
-        mEditor.putString(LOGIN_USER_LEVEL, uBean.getLevel());
+      /*  mEditor.putString(LOGIN_USER_LEVEL, uBean.getLevel());
         mEditor.putString(LOGIN_USER_PRICE, uBean.getPrice());
         mEditor.putString(LOGIN_USER_SCORES, uBean.getScores());
         mEditor.putString(LOGIN_USER_HEAD, uBean.getImageUrl());
@@ -162,7 +172,7 @@ public class SharedPreferencesUtils {
         mEditor.putString(LOGIN_USER_NODELIVERY, uBean.getNoDelivery());
         mEditor.putString(LOGIN_USER_MSG_COUNT, uBean.getIssee());
         mEditor.putString(LOGIN_USER_EAID, uBean.getEaid());
-        mEditor.putString(LOGIN_USER_CARTCOUNT, uBean.getCartCount());
+        mEditor.putString(LOGIN_USER_CARTCOUNT, uBean.getCartCount());*/
         // 是否已经登陆
         mEditor.putBoolean(LOGIN_USER_LOGIN, true);
         editflg = mEditor.commit();
@@ -176,9 +186,10 @@ public class SharedPreferencesUtils {
      */
     public UserBean getUserMessage() {
         UserBean uBean = new UserBean();
-        uBean.setAccount(sharedPreferences.getString(LOGIN_USER_ACCOUNT, ""));
+        uBean.setSName(sharedPreferences.getString(LOGIN_USER_NAME, ""));
         uBean.setMemberId(sharedPreferences.getString(LOGIN_USER_ID, ""));
-        uBean.setPassWord(sharedPreferences.getString(LOGIN_USER_PWD, ""));
+        uBean.setMemberPwd(sharedPreferences.getString(LOGIN_USER_PWD, ""));
+      /*  uBean.setPassWord(sharedPreferences.getString(LOGIN_USER_PWD, ""));
         uBean.setLevel(sharedPreferences.getString(LOGIN_USER_LEVEL, ""));
         uBean.setPrice(sharedPreferences.getString(LOGIN_USER_PRICE, ""));
         uBean.setScores(sharedPreferences.getString(LOGIN_USER_SCORES, ""));
@@ -191,7 +202,7 @@ public class SharedPreferencesUtils {
                 .getString(LOGIN_USER_NORECEIPT, ""));
         uBean.setNoDelivery(sharedPreferences.getString(LOGIN_USER_NODELIVERY,
                 ""));
-        uBean.setEaid(sharedPreferences.getString(LOGIN_USER_EAID, ""));
+        uBean.setEaid(sharedPreferences.getString(LOGIN_USER_EAID, ""));*/
         return uBean;
     }
 
@@ -202,8 +213,9 @@ public class SharedPreferencesUtils {
      */
     public boolean cleanUserMessage() {
         boolean editflg = false;
-        mEditor.putString(LOGIN_USER_ID, "");
+
         if (!getIsSavePw()) {
+            mEditor.putString(LOGIN_USER_ID, "");
             mEditor.putString(LOGIN_USER_PWD, "");
         }
         mEditor.putString(LOGIN_USER_LEVEL, "");
@@ -246,6 +258,17 @@ public class SharedPreferencesUtils {
      */
     public boolean editIsFirstLogin() {
         mEditor.putBoolean(IS_FIRST, false);
+        return mEditor.commit();
+    }
+
+    public Set<String> getTopics() {
+        Set<String> defStringsault = new TreeSet<>();
+        defStringsault.add("Fangchao");
+        return sharedPreferences.getStringSet(TOPIC_SUBSCRIBE, defStringsault);
+    }
+
+    public boolean putTopics(Set<String> topiclist) {
+        mEditor.putStringSet(TOPIC_SUBSCRIBE, topiclist);
         return mEditor.commit();
     }
 

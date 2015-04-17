@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#323232">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/menu_right_fragment_personNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/default_margin"
+                android:gravity="center_horizontal">
+
+                <LinearLayout
+                    android:id="@+id/view_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <ImageView
+                        android:layout_marginTop="@dimen/default_margin_max"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:src="@drawable/icon_right_head_default" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="点击头像登录"
+                        android:textColor="#969696"
+                        android:textSize="@dimen/text_small"
+                        android:layout_marginTop="@dimen/default_margin" />
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/view_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin_max"
+                    android:layout_marginBottom="@dimen/default_margin_max"
+                    android:paddingTop="@dimen/default_margin_max"
+                    android:paddingBottom="@dimen/default_margin_max"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="点击注册成为新用户"
+                        android:textColor="@color/default_text_red"
+                        android:textSize="@dimen/text_title"
+                        android:gravity="center" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menu_right_fragment_personYes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/default_margin_max"
+            android:orientation="vertical">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/menu_img_head"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/default_margin_max"
+                app:border_color="@color/black"
+                app:border_width="1dp"
+                fresco:roundAsCircle="true"
+                fresco:placeholderImage="@drawable/face_big_normal"
+                fresco:failureImage="@drawable/face_big_normal"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_margin"
+                android:gravity="center_horizontal">
+
+
+
+                <TextView
+                    android:id="@+id/menu_right_fragment_personName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+
+                    android:textColor="@color/white"
+                    android:text="ssss"
+
+                    android:textSize="@dimen/text_small" />
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/default_margin_max"
+                android:background="@drawable/menu_line_hor"></LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+
+                android:background="@drawable/menu_line_hor"></LinearLayout>
+
+            <Button
+                android:id="@+id/menu_right_fragment_setting"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_height="45dp"
+                android:background="@null"
+                android:drawableLeft="@drawable/icon_right_menu_setting"
+                android:drawablePadding="@dimen/default_margin_max"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="25dp"
+                android:text="系统设置"
+                android:textColor="@drawable/menu_item_textcolor"
+                android:textSize="@dimen/text_default" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@drawable/menu_line_hor"></LinearLayout>
+
+            <Button
+                android:id="@+id/menu_right_fragment_more"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_height="45dp"
+                android:background="@null"
+                android:drawableLeft="@drawable/icon_right_menu_more"
+                android:drawablePadding="@dimen/default_margin_max"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="25dp"
+                android:text="更多"
+                android:textColor="@drawable/menu_item_textcolor"
+                android:textSize="@dimen/text_default" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@drawable/menu_line_hor"></LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/menu_right_fragment_versionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/default_margin"
+        android:textColor="#969696"
+        android:textSize="@dimen/text_default"
+        android:text="3.0" />
+
+
+</RelativeLayout>

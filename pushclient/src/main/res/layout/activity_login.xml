@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/allActivityBackground"
+    android:orientation="vertical">
+
+    <com.opensky.supu.materialedittext.MaterialEditText
+        android:id="@+id/login_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="40dp"
+        android:hint="学号"
+        android:imeOptions="actionNext"
+        android:singleLine="true"
+        app:floatingLabel="none"
+        app:iconLeft="@drawable/icon_user"
+        app:iconPadding="0dp"
+        app:maxCharacters="20" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.opensky.supu.materialedittext.MaterialEditText
+            android:id="@+id/login_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="-12dp"
+            android:hint="密码"
+            android:imeOptions="actionDone"
+            android:password="true"
+            android:singleLine="true"
+            app:floatingLabel="none"
+            app:iconLeft="@drawable/icon_password"
+            app:iconPadding="0dp"
+            app:maxCharacters="16"
+            app:minCharacters="6" />
+
+        <ImageView
+            android:id="@+id/login_eye"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="35dp"
+            android:paddingBottom="@dimen/default_margin"
+            android:src="@drawable/login_eye" />
+    </RelativeLayout>
+
+    <CheckBox
+        android:id="@+id/cb_login_red"
+        style="@style/Address_Checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="-4dp"
+        android:checked="true"
+        android:gravity="center_vertical"
+        android:text=" 记住密码"
+        android:textColor="@color/textColor_gray" />
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:background="@drawable/background_register_btn"
+        android:text="登录"
+
+        android:textColor="@color/white" />
+
+
+
+
+</LinearLayout>

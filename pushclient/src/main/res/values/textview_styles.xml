@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAppearance.AppCompat.Default" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_default</item>
+    </style>
+     <!--点击后字体颜色改变-->
+    <style name="TextAppearance.AppCompat.Default.withDifColor" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_default</item>
+        <item name="android:textColor">@drawable/function_item_textcolor</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Small" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextAppearance.AppCompat.Min" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_min</item>
+    </style>
+    <style name="TextAppearance.AppCompat.Big" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+</resources>

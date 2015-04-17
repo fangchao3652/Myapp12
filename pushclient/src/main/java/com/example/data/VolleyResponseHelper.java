@@ -75,10 +75,10 @@ public class VolleyResponseHelper {
             case 3:
                 rBean = getPicList(json);
                 break;*/
-           /* case 4:
+          case 4:
                 rBean = login(json);
                 break;
-            case 5:
+            /*  case 5:
                 rBean = getAllCategory(json);
                 break;
             case 6:
@@ -238,10 +238,10 @@ public class VolleyResponseHelper {
             if (rBean.getRetCode() == 0) {
                 Gson gson = new Gson();
                 JSONObject message = json.optJSONObject(JSON_DATA);
-                Object o = message.opt(JSON_MEMBER);
+
                 UserBean bean = null;
-                if (o != null) {
-                    bean = gson.fromJson(o.toString(), UserBean.class);
+                if (message != null) {
+                    bean = gson.fromJson(message.toString(), UserBean.class);
                 }
                 rBean.setRetObj(bean);
             }

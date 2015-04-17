@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="red">#FF0000</color>
+    <color name="green">#00ff00</color>
+    <color name="textColor_default">#333333</color>
+    <color name="textColor_light">#666666</color>
+    <color name="textColor_gray">#999999</color>
+    <color name="default_stroke">#e7e7e7</color>
+    <!--<color name="default_text_red">#990100</color>-->
+    <color name="default_text_red">#E5004b</color>
+    <color name="default_text_rosered">#A12726</color>
+
+    <!--红色（价格等等）-->
+    <color name="supuy_red">#E5004b</color>
+
+
+    <!--属性选择 start-->
+    <color name="stroke">#BBBBBB</color>
+    <color name="default_title">#990101</color>
+    <!--属性选择 end-->
+    <!--Button-->
+    <color name="default_press">#e7e7e7</color>
+
+    <!--actionBar正常色相关颜色 start-->
+    <color name="allActivityBackground_normal">#F5F5F5</color>
+    <color name="actionBarBackground_normal">#FFFFFF</color>
+    <color name="actionBarDarkBackground_normal">#cccccc</color>
+    <!--actionBar正常色相关颜色 end-->
+    <!--actionBar夜间背景色相关 start-->
+    <color name="allActivityBackground_night">#000000</color>
+    <color name="actionBarBackground_night">#000000</color>
+    <color name="actionBarDarkBackground_night">#000000</color>
+    <!--actionBar夜间背景色相关 end-->
+
+    <!--点击颜色效果start-->
+    <drawable name="list_item_normal">#ffffff</drawable>
+    <drawable name="list_item_press">#E0E0E0</drawable>
+    <drawable name="function_item_press">#e7e7e7</drawable>
+    <drawable name="function_item_normal">#ffffff</drawable>
+    <!--点击颜色效果end-->
+
+    <color name="md_material_pink">#faccdb</color>
+    <color name="md_material_pink_press">#F6A9C2</color>
+    <color name="md_material_no">#e0e0e0</color>
+</resources>
