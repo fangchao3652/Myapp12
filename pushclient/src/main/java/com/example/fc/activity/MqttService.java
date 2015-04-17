@@ -48,7 +48,7 @@ public class MqttService extends Service implements MqttCallback {
     private static final String MQTT_BROKER = MQTT_BROKER_TEST;
     private static final String MQTT_BROKER_ONLINE = "mqtt.supumall.com"; //正式地址
     private static final int MQTT_PORT = 1883;                // 服务器推送端口
-    private static final int MQTT_KEEP_ALIVE = 4 * 60 * 1000; //心跳包时间，毫秒
+    private static final int MQTT_KEEP_ALIVE = 1 * 60 * 1000; //心跳包时间，毫秒
     private static final String MQTT_KEEP_ALIVE_TOPIC_FORAMT = "/users/%s/keepalive"; // Topic format for KeepAlives
     private static final byte[] MQTT_KEEP_ALIVE_MESSAGE = {0}; // 心跳包发送内容
     private static final boolean MQTT_CLEAN_SESSION = true; // Start a clean session?
@@ -178,8 +178,8 @@ public class MqttService extends Service implements MqttCallback {
         mDataStore = new MqttDefaultFilePersistence(getCacheDir().getAbsolutePath());
 
 
-//        mOpts = new MqttConnectOptions();
-//        mOpts.setCleanSession(MQTT_CLEAN_SESSION);
+      // mOpts = new MqttConnectOptions();
+      // mOpts.setCleanSession(MQTT_CLEAN_SESSION);
         // Do not set keep alive interval on mOpts we keep track of it with alarm's
 
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);

@@ -41,6 +41,12 @@
             android:label="设置"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <receiver android:name=".receiver.BootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            </intent-filter>
+        </receiver>
         <service
             android:name=".fc.activity.PushService"
             android:label=" Push Notifications Service"></service>
