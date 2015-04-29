@@ -29,7 +29,7 @@ public class WelcomeActivity extends BaseActivity {
             MqttService.actionStart(WelcomeActivity.this);
         }
 if(SharedPreferencesUtils.getInstance().isLogin()){
-    MqttService.actionStop(this);
+  //  MqttService.actionStop(this);
     //添加主题
     MqttService.AddTopic(SharedPreferencesUtils.getInstance().getUserMessage().getMemberId());
     MqttService.AddTopic("计算机112");

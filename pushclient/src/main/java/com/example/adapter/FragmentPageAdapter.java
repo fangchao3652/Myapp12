@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Fragment预加载
  *
- * @author Xuzj
+ * @author fc
  */
 public class FragmentPageAdapter extends PagerAdapter implements
         ViewPager.OnPageChangeListener {

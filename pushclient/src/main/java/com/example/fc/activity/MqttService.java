@@ -178,8 +178,8 @@ public class MqttService extends Service implements MqttCallback {
         mDataStore = new MqttDefaultFilePersistence(getCacheDir().getAbsolutePath());
 
 
-      // mOpts = new MqttConnectOptions();
-      // mOpts.setCleanSession(MQTT_CLEAN_SESSION);
+        // mOpts = new MqttConnectOptions();
+        // mOpts.setCleanSession(MQTT_CLEAN_SESSION);
         // Do not set keep alive interval on mOpts we keep track of it with alarm's
 
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -234,7 +234,9 @@ public class MqttService extends Service implements MqttCallback {
     private synchronized void start() {
         if (mStarted) {
             Log.e(DEBUG_TAG, "尝试启动推送服务，但推送服务已经启动");
-            return;
+            Log.e(DEBUG_TAG, "《《《《《《      reconnectIfNecessary》》》》》》》》》》");
+            reconnectIfNecessary();
+           return;
         }
 
         if (hasScheduledKeepAlives()) {
@@ -363,6 +365,10 @@ public class MqttService extends Service implements MqttCallback {
             } catch (MqttException ex) {
                 ex.printStackTrace();
                 stop();
+                reconnectIfNecessary();
+            }
+            catch (Exception e){
+                Log.e("exception","aaaaaaaaaaa");
             }
         }
     }
@@ -370,12 +376,13 @@ public class MqttService extends Service implements MqttCallback {
     /**
      * 重新连接如果他是必须的
      */
-    private synchronized void reconnectIfNecessary() {
+    private  synchronized void reconnectIfNecessary() {
 
         if (mStarted && mClient == null) {
             connect();
-        } else {
+        } else  {
             Log.e(DEBUG_TAG, "重新连接没有启动，mStarted:" + String.valueOf(mStarted) + " mClient:" + mClient);
+            connect();
         }
     }
 
@@ -433,7 +440,8 @@ public class MqttService extends Service implements MqttCallback {
         MqttMessage message = new MqttMessage(MQTT_KEEP_ALIVE_MESSAGE);
         message.setQos(MQTT_KEEP_ALIVE_QOS);
 
-        return mKeepAliveTopic.publish(message);
+
+        return  mKeepAliveTopic.publish(message);
     }
 
     /**

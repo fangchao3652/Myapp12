@@ -81,7 +81,7 @@ public class LoginActivity extends BaseActionBarActivity implements DataHelper.D
                     materialDialog.setMessage(getResources().getString(R.string.activity_login_logining));
                     materialDialog.show();
                     DataHelper topgoods = new PostDataHelper(URLHelper.getURL(
-                            "", URLHelper.M_LOGIN),
+                            URLHelper.MOUDLE_Student, URLHelper.M_LOGIN),
                             URLHelper.getLoginParams(account.trim(), password.trim(), CommonUtils.getDeviceId()), this, 0);
                     topgoods.execute();
                 }

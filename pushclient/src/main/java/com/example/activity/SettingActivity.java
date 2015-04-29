@@ -155,7 +155,7 @@ public class SettingActivity extends BaseActionBarActivity {
                 SharedPreferencesUtils.getInstance().cleanUserMessage();
                 setResult(RESULT_OK);
                 finish();
-                overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_right_out);
+               // overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_right_out);
                 break;
 
         }

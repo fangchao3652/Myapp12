@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,9 @@ import com.example.common.Exit;
 import com.example.common.SharedPreferencesUtils;
 import com.example.common.StringUtils;
 import com.example.data.DataHelper;
+import com.example.fragment.FragmentFresh;
+import com.example.fragment.FragmentFresh_;
+import com.example.fragment.FragmentNewsList_;
 import com.example.fragment.FragmentRight_;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -46,6 +50,7 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
     @ViewById(R.id.pager)
     ViewPager pager;
     Exit exit = new Exit();
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
     /**
      * 保存当前页面是否为夜间模式
      */
@@ -85,10 +90,10 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
         titles = new ArrayList<>();
         fragments.add(FragmentRight_.builder().build());
         titles.add("推荐");
-        fragments.add(FragmentRight_.builder().build());
-        titles.add("推荐2");
-        fragments.add(FragmentRight_.builder().build());
-        titles.add("推荐3");
+        fragments.add(FragmentNewsList_.builder().build());
+        titles.add("新闻");
+        fragments.add(FragmentFresh_.builder().build());
+        titles.add("新鲜事");
         fragments.add(FragmentRight_.builder().build());
         titles.add("推荐4");
 

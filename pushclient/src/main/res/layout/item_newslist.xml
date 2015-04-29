@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp"
+    app:cardBackgroundColor="#FFF"
+    app:cardCornerRadius="2dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="16dp">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/ll_img"
+            android:layout_width="99dp"
+            android:layout_height="99dp"
+          android:layout_centerVertical="true"
+            android:background="@drawable/item_img_border"
+            android:padding="1dp">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/item_img"
+                android:layout_width="97dp"
+                android:layout_height="97dp"
+
+
+                fresco:actualImageScaleType="fitXY"
+                fresco:failureImage="@drawable/item_default_img_err"
+                fresco:placeholderImage="@drawable/item_default_img" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:layout_toRightOf="@+id/ll_img"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TITLE"
+                android:singleLine="true"
+                android:textColor="@color/textColor_default"
+                android:textSize="@dimen/text_default" />
+
+
+                <TextView
+                    android:id="@+id/tv_source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="青岛科技大学信息学院"
+                    android:textColor="@color/default_text_red"
+                    android:textSize="@dimen/text_small" />
+
+                <TextView
+                    android:id="@+id/tv_publishtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/default_margin"
+                    android:drawablePadding="@dimen/default_margin_small"
+android:layout_gravity="right"
+                    android:text=" 2015-2-24"
+                    android:textColor="@color/textColor_gray"
+                    android:textSize="@dimen/text_small" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_dividing"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/line_dividing_dotted"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

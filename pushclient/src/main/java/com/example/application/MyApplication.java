@@ -8,6 +8,9 @@ import com.example.db.SqliteHelper;
 import com.example.greenDao.DaoMaster;
 import com.example.greenDao.DaoSession;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 
 /**
@@ -54,8 +57,16 @@ public class MyApplication extends Application {
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(getApplicationContext());
         Fresco.initialize(this);
+        initImageLoader();
     }
-
+    // 初始化ImageLoader
+    public  void initImageLoader() {
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+                .tasksProcessingOrder(QueueProcessingType.LIFO)
+                .writeDebugLogs()
+                .build();
+        ImageLoader.getInstance().init(config);
+    }
     /**
      * @return Volley队列
      */

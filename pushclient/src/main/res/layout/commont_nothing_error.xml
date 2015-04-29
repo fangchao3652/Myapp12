@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:match="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+android:id="@+id/rl_include"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <com.example.view.matchview.MatchTextView
+        android:id="@+id/tv_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+
+        match:text="Loading..."
+        match:textColor="#000000"
+
+        match:textSize="8sp"></com.example.view.matchview.MatchTextView>
+
+    <com.example.view.matchview.MatchTextView
+        android:id="@+id/tv_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        match:text="error"
+        android:visibility="gone"
+        match:textColor="#000000"
+        match:textSize="8sp"></com.example.view.matchview.MatchTextView>
+
+
+</RelativeLayout>

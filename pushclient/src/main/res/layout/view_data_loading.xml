@@ -14,7 +14,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <cc.android.supu.view.ProgressWheel
+        <com.example.view.ProgressWheel
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
