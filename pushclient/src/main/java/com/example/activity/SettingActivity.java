@@ -1,6 +1,7 @@
 package com.example.activity;
 
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -48,12 +49,15 @@ public class SettingActivity extends BaseActionBarActivity {
     RelativeLayout setting_showMimg;// 标清
     @ViewById(R.id.setting_showNimg)
     RelativeLayout setting_showNimg;// 不显示
+    @ViewById(R.id.setting_LargeMode)
+    RelativeLayout setting_LargeMode;//大图模式
     @ViewById(R.id.cb_showHimg)
     CheckBox cb_showHimg;// 高清
     @ViewById(R.id.cb_showMimg)
     CheckBox cb_showMimg;// 标清
     @ViewById(R.id.cb_showNimg)
     CheckBox cb_showNimg;// 不显示
+
 
     @ViewById(R.id.setting_tvCache)
     TextView tvCache;
@@ -63,7 +67,8 @@ public class SettingActivity extends BaseActionBarActivity {
     @ViewById(R.id.switch_open_send)//是否开启推送
             UISwitchButton switch_open_sent;
 
-
+    @ViewById(R.id.switch_large)
+    UISwitchButton switch_large;// 大图
     @ViewById(R.id.setting_quiet_time)//安静时段 rl
             RelativeLayout rl_setting_quiet_time;
     ProgressDialog md;
@@ -90,7 +95,7 @@ public class SettingActivity extends BaseActionBarActivity {
             cb_showNimg.setChecked(true);
         }
 
-
+        switch_large.setChecked(SharedPreferencesUtils.getInstance().getIslarge());
         switch_open_sent.setChecked(SharedPreferencesUtils.getInstance().getIsopensent());
         md = ProgressDialog.createDialog(this);
         if (SharedPreferencesUtils.getInstance().getIsopensent()) {
@@ -109,7 +114,7 @@ public class SettingActivity extends BaseActionBarActivity {
 
     @Click({R.id.setting_removeCache, R.id.person_detail_exit,
             R.id.setting_showHimg, R.id.setting_showMimg, R.id.setting_quiet_time,
-            R.id.setting_showNimg})
+            R.id.setting_showNimg,R.id.setting_LargeMode})
     void click(View v) {
         switch (v.getId()) {
             case R.id.setting_removeCache:// 清除缓存
@@ -155,8 +160,9 @@ public class SettingActivity extends BaseActionBarActivity {
                 SharedPreferencesUtils.getInstance().cleanUserMessage();
                 setResult(RESULT_OK);
                 finish();
-               // overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_right_out);
+                // overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_right_out);
                 break;
+
 
         }
     }
@@ -273,7 +279,7 @@ public class SettingActivity extends BaseActionBarActivity {
      * @param compoundButton
      * @param isChecked
      */
-    @CheckedChange({R.id.switch_open_send})
+    @CheckedChange({R.id.switch_open_send,R.id.switch_large})
     void CheckChanged(CompoundButton compoundButton, boolean isChecked) {
         switch (compoundButton.getId()) {
 
@@ -288,6 +294,10 @@ public class SettingActivity extends BaseActionBarActivity {
                     MqttService.actionStop(SettingActivity.this);
                     rl_setting_quiet_time.setVisibility(View.GONE);
                 }
+                break;
+
+            case R.id.switch_large:
+                SharedPreferencesUtils.getInstance().editIslarge(isChecked);
                 break;
         }
     }

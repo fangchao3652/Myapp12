@@ -16,34 +16,36 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="100dp">
 
         <LinearLayout
             android:id="@+id/ll_img"
             android:layout_width="99dp"
             android:layout_height="99dp"
-          android:layout_centerVertical="true"
+            android:layout_centerVertical="true"
             android:background="@drawable/item_img_border"
+            android:gravity="center"
             android:padding="1dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/item_img"
-                android:layout_width="97dp"
-                android:layout_height="97dp"
-
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
 
                 fresco:actualImageScaleType="fitXY"
                 fresco:failureImage="@drawable/item_default_img_err"
                 fresco:placeholderImage="@drawable/item_default_img" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/default_margin"
             android:layout_toRightOf="@+id/ll_img"
             android:orientation="vertical"
-            android:gravity="center_vertical"
+            android:padding="16dp"
+
+
             android:paddingLeft="@dimen/default_margin"
             android:paddingRight="@dimen/default_margin">
 
@@ -51,35 +53,39 @@
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TITLE"
-                android:singleLine="true"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="TITLsssssssssssssssssssssssssssssssssssssssssssssssssssdddddddddddE"
                 android:textColor="@color/textColor_default"
                 android:textSize="@dimen/text_default" />
 
 
-                <TextView
-                    android:id="@+id/tv_source"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="青岛科技大学信息学院"
-                    android:textColor="@color/default_text_red"
-                    android:textSize="@dimen/text_small" />
+            <TextView
+                android:id="@+id/tv_source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="青岛科技大学信息学院"
 
-                <TextView
-                    android:id="@+id/tv_publishtime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/default_margin"
-                    android:drawablePadding="@dimen/default_margin_small"
-android:layout_gravity="right"
-                    android:text=" 2015-2-24"
-                    android:textColor="@color/textColor_gray"
-                    android:textSize="@dimen/text_small" />
+                android:textColor="@color/default_text_red"
+                android:textSize="@dimen/text_small" />
+
+            <TextView
+                android:id="@+id/tv_publishtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:drawablePadding="@dimen/default_margin_small"
+
+                android:text=" 2015-2-24"
+                android:textColor="@color/textColor_gray"
+                android:textSize="@dimen/text_small" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/ll_dividing"

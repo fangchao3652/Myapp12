@@ -227,7 +227,35 @@
                     android:clickable="false" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/setting_LargeMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin_mid"
+                android:layout_marginRight="@dimen/default_margin_mid"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/function_item_bg"
+                android:clickable="true"
+                android:paddingRight="@dimen/default_margin_big">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:drawablePadding="@dimen/default_margin_big"
+                    android:gravity="left|center_vertical"
+                    android:paddingLeft="@dimen/default_margin_30"
+                    android:text="大图模式(新闻列表)"
+                    android:textColor="@color/textColor_gray"
+                    android:textSize="@dimen/text_default" />
+
+                <com.example.view.UISwitchButton
+                    android:id="@+id/switch_large"
+                    android:layout_width="32dp"
+                    android:layout_height="15dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
 
 
 

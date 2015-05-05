@@ -101,8 +101,8 @@ public class SharedPreferencesUtils {
             + "showagein_sea";//海外直邮 购买流程及须知 不再提醒
     public static final String IS_BIG_TXT_GOODSDETAIL = SHAREDPREFERENCES
             + "is_big_txt_goodsdetail";//是否 使用大字体
-    public static final String IS_NIGHT = SHAREDPREFERENCES
-            + "is_night";//是否开启NIGHT夜间模式
+    public static final String IS_LARGE = SHAREDPREFERENCES
+            + "is_large";//是否大图
     public static final String SHOWSTYLE_BOUDED = SHAREDPREFERENCES + "showstyle_bouded";
 
     public static final String DATA_SYNCHRONOUS_TIME = SHAREDPREFERENCES
@@ -388,24 +388,19 @@ public class SharedPreferencesUtils {
         return sharedPreferences.getBoolean(IS_OPEN_SENT, true);
     }
 
-    /**
-     * 修改开启夜间模式 标记位
-     *
-     * @param b
-     * @return
-     */
-    public boolean editIsnight(Boolean b) {
-        mEditor.putBoolean(IS_NIGHT, b);
+
+    public boolean editIslarge(Boolean b) {
+        mEditor.putBoolean(IS_LARGE, b);
         return mEditor.commit();
     }
 
     /**
-     * 是否开启夜间模式
+     * 是否大图模式
      *
      * @return
      */
-    public boolean getIsnight() {
-        return sharedPreferences.getBoolean(IS_NIGHT, true);
+    public boolean getIslarge() {
+        return sharedPreferences.getBoolean(IS_LARGE, true);
     }
 
     /**

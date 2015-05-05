@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    android:id="@+id/card_bg"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_bg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
@@ -11,27 +10,29 @@
     app:cardBackgroundColor="#FFF"
     app:cardCornerRadius="2dp"
     app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true"
-    >
+    app:cardUseCompatPadding="true">
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  android:padding="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textStyle="bold"
             android:text="标题aaaaaaaaaaaaaa"
             android:textColor="@color/primary_text_default_material_light"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <RelativeLayout android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
 
             <TextView
                 android:id="@+id/tv_info"
@@ -40,7 +41,7 @@
                 android:singleLine="true"
                 android:text="fdfdfdf@@@dfsf"
                 android:textColor="@color/secondary_text_default_material_light"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_views"
@@ -50,35 +51,38 @@
                 android:singleLine="true"
                 android:text="浏览120次"
                 android:textColor="@color/secondary_text_default_material_light"
-                android:textSize="14sp"/>
+                android:textSize="14sp" />
 
         </RelativeLayout>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="match_parent"
-        android:layout_height="16dp"
-        android:layout_alignParentTop="true"
-        android:indeterminate="false"
-        android:indeterminateDrawable="@drawable/progress_indeterminate_horizontal_holo"
-        android:indeterminateOnly="false"
-        android:mirrorForRtl="true"
-        android:progress="0"
-        android:visibility="gone"
-        android:progressDrawable="@drawable/progress_horizontal_holo_dark"/>
-        <com.example.view.ShowMaxImageView
-            android:id="@+id/img"
-            android:layout_below="@+id/progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
 
-            android:layout_marginRight="8dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            /></RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_alignParentTop="true"
+                android:indeterminate="false"
+                android:indeterminateDrawable="@drawable/progress_indeterminate_horizontal_holo"
+                android:indeterminateOnly="false"
+                android:mirrorForRtl="true"
+                android:progress="0"
+                android:progressDrawable="@drawable/progress_horizontal_holo_dark"
+                android:visibility="gone" />
+
+            <com.example.view.ShowMaxImageView
+                android:id="@+id/img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/progress"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+
+                android:layout_marginTop="8dp"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop" />
+        </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
