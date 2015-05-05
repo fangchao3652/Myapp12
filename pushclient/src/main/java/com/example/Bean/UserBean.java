@@ -1,15 +1,18 @@
 package com.example.Bean;
 
+import java.util.List;
+
 /**
  * 用户信息bean
  *
- * @author Zxh
+ * @author fc
  */
 public class UserBean extends BaseBean {
     private String MemberId;
     private String SName;
     private String MemberPwd;
     private String ImageUrl;
+    private List<String> list;
     public String getMemberPwd() {
         return MemberPwd;
     }

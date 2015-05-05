@@ -39,11 +39,13 @@
             android:name=".activity.NewsDetailsActivity_"
             android:configChanges="keyboardHidden|orientation"
             android:label="详情"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.FreshNewsDetailActivity_"
             android:configChanges="keyboardHidden|orientation"
             android:label="详情"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.WebActivity_"

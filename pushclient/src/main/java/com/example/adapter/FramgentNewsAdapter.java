@@ -46,6 +46,7 @@ public class FramgentNewsAdapter extends FooterAdapter {
         vh.Tv_title.setText(getItem(position).getTitle());//fc
         vh.Tv_source.setText(getItem(position).getSource());//fc
         vh.Tv_time.setText(getItem(position).getPublishTime());//fc
+      if(getItem(position).getImageUrl()!=null)
         vh.item_img.setImageURI(Uri.parse(getItem(position).getImageUrl()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

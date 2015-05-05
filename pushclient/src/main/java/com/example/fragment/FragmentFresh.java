@@ -199,5 +199,11 @@ public class FragmentFresh extends BaseFragment implements SwipeRefreshLayout.On
         }
 
     }
+    @Override
+    public void onActionBarClick() {
+        if (mRecyclerView != null && mAdapter.getItemCount() > 0) {
+            mRecyclerView.scrollToPosition(0);
+        }
+    }
 
 }

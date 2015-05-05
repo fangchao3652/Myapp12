@@ -2,6 +2,7 @@ package com.example.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -49,6 +50,7 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
     PagerSlidingTab tabs;
     @ViewById(R.id.pager)
     ViewPager pager;
+    ActionBar actionBar;
     Exit exit = new Exit();
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     /**
@@ -66,6 +68,15 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
     private List<String> titles;
     private boolean isHide = false;
 
+
+    public ActionBar getActionBar1() {
+        return actionBar;
+    }
+
+    public void setActionBar1(ActionBar actionBar) {
+        this.actionBar = actionBar;
+    }
+
     /**
      * 初始化View
      */
@@ -76,6 +87,8 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
         showBackPress = false;
         showTitle = false;
         SwipeBack = false;
+        actionBar=mActionBar;
+
         initSlidingMenu();
         initTabView();
         initData();

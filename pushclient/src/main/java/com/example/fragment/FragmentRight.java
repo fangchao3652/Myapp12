@@ -2,6 +2,7 @@ package com.example.fragment;
 
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ import org.json.JSONObject;
  * 左滑个人中心
  */
 @EFragment(R.layout.fragment_menu_right)
-public class FragmentRight extends BaseFragment implements DataHelper.DataListener {
+public class FragmentRight  extends Fragment implements DataHelper.DataListener {
 
     @ViewById(R.id.menu_right_fragment_personYes)
     LinearLayout personYesV;//登录后

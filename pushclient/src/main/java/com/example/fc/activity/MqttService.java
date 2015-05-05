@@ -33,6 +33,7 @@ import java.util.TreeSet;
 
 
 /**
+ * @author fangchao
  * 推送服务
  */
 public class MqttService extends Service implements MqttCallback {
@@ -44,7 +45,7 @@ public class MqttService extends Service implements MqttCallback {
     private static final int MQTT_KEEP_ALIVE_QOS = MQTT_QOS_0; //心跳包的发送级别默认最低
     public static final int MQTT_QOS_1 = 1; //消息投放级别 QOS Level 1 (至少一次，有可能重复。 )
     public static final int MQTT_QOS_2 = 2; //消息投放级别 QOS Level 2 (只有一次，确保消息只到达一次（用于比较严格的计费系统）。)
-    private static final String MQTT_BROKER_TEST = "192.168.0.183"; //测试地址@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+    private static final String MQTT_BROKER_TEST = "115.28.131.31"; //测试地址@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
     private static final String MQTT_BROKER = MQTT_BROKER_TEST;
     private static final String MQTT_BROKER_ONLINE = "mqtt.supumall.com"; //正式地址
     private static final int MQTT_PORT = 1883;                // 服务器推送端口
@@ -54,7 +55,7 @@ public class MqttService extends Service implements MqttCallback {
     private static final boolean MQTT_CLEAN_SESSION = true; // Start a clean session?
     private static final String MQTT_URL_FORMAT = "tcp://%s:%d"; // 推送url格式组装
     private static final String DEVICE_ID_FORMAT = "an_%s"; // 设备id的前缀
-    public static String[] topicFilters = {"Fangchao"};//订阅的主题               @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+    public static String[] topicFilters = {"Fangchao"};//订阅的主题    全局主题           @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
     public static String MQTT_CLIENT_ID = "Fangchao";
     private static final String ACTION_START = MQTT_CLIENT_ID + ".START"; // Action to start 启动
     private static final String ACTION_STOP = MQTT_CLIENT_ID + ".STOP"; // Action to stop 停止
@@ -232,6 +233,11 @@ public class MqttService extends Service implements MqttCallback {
      * 尝试启动推送服务器，并注册网络改变接收器
      */
     private synchronized void start() {
+        if(mConnHandler==null ){
+            HandlerThread thread = new HandlerThread(MQTT_THREAD_NAME);
+            thread.start();
+            mConnHandler = new Handler(thread.getLooper());
+        }
         if (mStarted) {
             Log.e(DEBUG_TAG, "尝试启动推送服务，但推送服务已经启动");
             Log.e(DEBUG_TAG, "《《《《《《      reconnectIfNecessary》》》》》》》》》》");
@@ -291,10 +297,12 @@ public class MqttService extends Service implements MqttCallback {
             e.printStackTrace();
         }
 
+        if(mConnHandler!=null)
         mConnHandler.post(new Runnable() {
             @Override
             public void run() {
                 try {
+                    if(mClient!=null)
                     mClient.connect();
                     //fc
                     topicFilters = castSet2Array(SharedPreferencesUtils.getInstance().getTopics());
@@ -488,7 +496,7 @@ public class MqttService extends Service implements MqttCallback {
                 "  Message:\t" + new String(mqttMessage.getPayload()) +
                 "  QoS:\t" + mqttMessage.getQos());
 
-        com.example.fc.activity.MqttNotifier.notify(this, new String(mqttMessage.getPayload()));
+        com.example.fc.activity.MqttNotifier.notify(this, new String(mqttMessage.getPayload()));//fc
     }
 
     @Override
@@ -502,5 +510,5 @@ public class MqttService extends Service implements MqttCallback {
     private class MqttConnectivityException extends Exception {
         private static final long serialVersionUID = -7385866796799469420L;
     }
-    //{"title": "这是标题","content":"这是内容","type":1}
+    //{"title": "这是标题","content":"这是,内容","type":3,"newId":3}
 }

@@ -1,5 +1,6 @@
 package com.example.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html;
@@ -106,7 +107,13 @@ public class NewsDetailsActivity extends BaseActionBarActivity implements DataHe
         initdata(1);
         // mImageGetter = new NetworkImageGetter();
     }
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        showView(0);
+        initdata(1);
+    }
     @Click({R.id.view_loading_error})
     void click(View v) {
         switch (v.getId()) {

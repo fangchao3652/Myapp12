@@ -21,10 +21,18 @@ public class NotifierBean  {
      */
     private String content;
     /**
-     * 类型0商品列表1特卖列表2商品详情
+     * 类型0商品列表1特卖列表2商品详情 3.新闻
      */
     private int type;
-  
+    private  String newId;
+
+    public String getNewId() {
+        return newId;
+    }
+
+    public void setNewId(String newId) {
+        this.newId = newId;
+    }
 
     public String getTitle() {
         return title;

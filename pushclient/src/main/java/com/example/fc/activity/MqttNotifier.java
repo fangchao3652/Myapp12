@@ -11,11 +11,13 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.R;
+import com.example.activity.NewsDetailsActivity_;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 
 /**
+ * @author  fangchao
  * 消息通知展示
  */
 
@@ -108,10 +110,7 @@ public class MqttNotifier {
                 //  .mcategoryId(mBean.getCategoryId()).mbrandId(mBean.getBrandId()).title(title).get();
                 break;
             case 1:
-                //组装特卖信息bean
-                // BoutiqueSaleBean boutiqueSaleBean = new BoutiqueSaleBean();
-                //    boutiqueSaleBean.setFlashSaleName(mBean.getTitle());
-                //   boutiqueSaleBean.setFlashSaleId(mBean.getFlashId());
+
                 mIntent = new Intent();
 
                 mIntent.setClass(context, com.example.fc.activity.firstActivity.class);
@@ -123,6 +122,8 @@ public class MqttNotifier {
                 mIntent = new Intent(context, com.example.fc.activity.SecondActivity.class);
                 break;
             //   mIntent = GoodsDetailActivity_.intent(context).goodsSN(mBean.getGoodsId()).get();
+            case 3:
+                mIntent= NewsDetailsActivity_.intent(context).id(mBean.getNewId()).get();
             default:
                 //  mIntent = HomeActivity_.intent(context).get();
                 break;
