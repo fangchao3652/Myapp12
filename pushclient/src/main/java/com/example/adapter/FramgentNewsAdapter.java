@@ -1,6 +1,7 @@
 package com.example.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
@@ -9,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.Bean.BaseBean;
 import com.example.Bean.NewBaseBean;
@@ -20,7 +23,12 @@ import com.example.view.OnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.tencent.weibo.sdk.android.api.util.SharePersistent;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import java.io.File;
 
 /**
  * Created by fc on 2015/4/27.
@@ -43,9 +51,10 @@ public class FramgentNewsAdapter extends FooterAdapter {
                 .cacheOnDisk(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .resetViewBeforeLoading(true)
-                .showImageOnLoading(R.drawable.ic_loading_large)
+                .showImageOnLoading(R.drawable.wait)
+                .showImageOnFail(R.drawable.wait)
                 .build();
-        isLargeMode= SharedPreferencesUtils.getInstance().getIslarge();
+        isLargeMode = SharedPreferencesUtils.getInstance().getIslarge();
     }
 
     @Override
@@ -74,20 +83,72 @@ public class FramgentNewsAdapter extends FooterAdapter {
     }
 
     @Override
-    public void onBindContentItemView(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindContentItemView(final RecyclerView.ViewHolder holder, final int position) {
 
         if (isLargeMode) {
-            ContentViewHolderLarge vh = (ContentViewHolderLarge) holder;
-            imageLoader.displayImage(getItem(position).getImageUrl(), vh.img, options);
+            final ContentViewHolderLarge vh = (ContentViewHolderLarge) holder;
+            if (SharedPreferencesUtils.getInstance().getImgQuerity() == 3) {
+
+            } else
+                imageLoader.displayImage(getItem(position).getImageUrl(), vh.img, options,new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String s, View view) {
+                        vh.progressBar.setProgress(6);
+                        vh.progressBar.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String s, View view, FailReason failReason) {
+                        vh.progressBar.setVisibility(View.GONE);
+                        Toast.makeText(mContext.getApplicationContext(), "加载失败" + failReason.getType().name(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                        vh.progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String s, View view) {
+                        vh.progressBar.setVisibility(View.GONE);
+
+                    }
+                },new ImageLoadingProgressListener() {
+                    @Override
+                    public void onProgressUpdate(String imageUri, View view, int current, int total) {
+
+                        vh.progressBar.setProgress((int) (current * 100f / total));
+                    }
+                });
             vh.tv_title.setText(getItem(position).getTitle());
             vh.tv_info.setText(getItem(position).getSource());
             vh.tv_time.setText(getItem(position).getPublishTime());//fc
+
+            vh.tv_share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = getItem(position).getImageUrl();
+                    File cachefil = ImageLoader.getInstance().getDiskCache().get(url);
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    if (cachefil.exists() && cachefil != null) {
+                        intent.setType("image/*");
+                        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(cachefil));
+                    }
+                    intent.putExtra(Intent.EXTRA_TEXT, "分享自" + mContext.getResources().getString(R
+                            .string.app_name) + getItem(position).getTitle());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(Intent.createChooser(intent, mContext.getResources().getString(R
+                            .string.app_name)));
+                }
+            });
+
+
         } else {
             ContentViewHolder vh = (ContentViewHolder) holder;
             vh.Tv_title.setText(getItem(position).getTitle());//fc
             vh.Tv_source.setText(getItem(position).getSource());//fc
             vh.Tv_time.setText(getItem(position).getPublishTime());//fc
-            if (getItem(position).getImageUrl() != null)
+            if (getItem(position).getImageUrl() != null&&SharedPreferencesUtils.getInstance().getImgQuerity()!=3)
                 vh.item_img.setImageURI(Uri.parse(getItem(position).getImageUrl()));
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -156,9 +217,10 @@ public class FramgentNewsAdapter extends FooterAdapter {
         private TextView tv_share;
         private ImageView img;
         private CardView card;
-
+        private ProgressBar progressBar;
         public ContentViewHolderLarge(View contentView) {
             super(contentView);
+            progressBar= (ProgressBar) contentView.findViewById(R.id.progress);
             tv_share = (TextView) contentView.findViewById(R.id.tv_share);
             card = (CardView) contentView.findViewById(R.id.card);
             tv_title = (TextView) contentView.findViewById(R.id.tv_title);

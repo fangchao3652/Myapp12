@@ -302,20 +302,20 @@ public class MqttService extends Service implements MqttCallback {
             @Override
             public void run() {
                 try {
-                    if(mClient!=null)
-                    mClient.connect();
-                    //fc
-                    topicFilters = castSet2Array(SharedPreferencesUtils.getInstance().getTopics());
-                    mClient.subscribe(topicFilters, new int[topicFilters.length]);
+                    if(mClient!=null) {
+                        mClient.connect();
+                        //fc
+                        topicFilters = castSet2Array(SharedPreferencesUtils.getInstance().getTopics());
+                        mClient.subscribe(topicFilters, new int[topicFilters.length]);
 
-                    mClient.setCallback(MqttService.this);
+                        mClient.setCallback(MqttService.this);
 
-                    mStarted = true; // Service is now connected
+                        mStarted = true; // Service is now connected
 
-                    Log.e(DEBUG_TAG, "成功连接推送服务器并启动心跳包闹钟");
+                        Log.e(DEBUG_TAG, "成功连接推送服务器并启动心跳包闹钟");
 
-                    startKeepAlives();
-                } catch (MqttException e) {
+                        startKeepAlives();
+                    }        } catch (MqttException e) {
                     e.printStackTrace();
                 }
             }

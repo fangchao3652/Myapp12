@@ -78,6 +78,7 @@ public class FragmentFreshAdapter extends FooterAdapter {
 
             @Override
             public void onLoadingCancelled(String s, View view) {
+                holder.progressBar.setVisibility(View.GONE);
 
             }
         }, new ImageLoadingProgressListener() {

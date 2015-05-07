@@ -30,7 +30,7 @@ import org.androidannotations.annotations.ViewById;
 import org.json.JSONObject;
 
 /**
- * Created by supumall on 2015/4/27.
+ * Created by fc on 2015/4/27.
  */
 @EFragment(R.layout.fragment_newslist)
 public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, DataHelper.DataListener {
