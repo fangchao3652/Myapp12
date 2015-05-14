@@ -8,13 +8,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.example.Bean.FreshNews;
-import com.example.Bean.FreshNewsDetailsBean;
 import com.example.Bean.FreshNewsListBean;
 import com.example.Bean.ResultSingleBean;
 import com.example.R;
 import com.example.adapter.FragmentFreshAdapter;
 import com.example.common.CustomToast;
 import com.example.data.DataHelper;
+import com.example.data.DiskDataHelper;
 import com.example.data.GetDataHelper;
 import com.example.data.VolleyResponseHelper;
 import com.example.view.RecyclerOnScrollListener;
@@ -50,7 +50,7 @@ public class FragmentFresh extends BaseFragment implements SwipeRefreshLayout.On
     private FragmentFreshAdapter mAdapter;
     private ImageLoader imageLoader;
     private DisplayImageOptions options;
-
+private boolean  loadedfromcachce=false;
     @AfterViews
     void init() {
         imageLoader = ImageLoader.getInstance();
@@ -62,8 +62,10 @@ public class FragmentFresh extends BaseFragment implements SwipeRefreshLayout.On
                 .showImageOnLoading(R.drawable.wait)
                 .build();
         initUI();
+        inintByLocalData();
         initData(1);
     }
+
 
     private void initUI() {
         mRefreshLayout.setOnRefreshListener(this);
@@ -80,6 +82,7 @@ public class FragmentFresh extends BaseFragment implements SwipeRefreshLayout.On
             public void onLoadMore() {
 
                 if (mAdapter != null && mAdapter.isCanLoadMore()) {
+                    loadedfromcachce=false;
                     PageIndex++;
                     initData(2);
                 }
@@ -102,6 +105,32 @@ public class FragmentFresh extends BaseFragment implements SwipeRefreshLayout.On
         imageLoader.clearMemoryCache();
     }
 
+    private void inintByLocalData() {
+        JSONObject jsonObject = DiskDataHelper.getInstance().getListFromCache("fragment_fresh");
+        if (jsonObject != null) {
+            ResultSingleBean rb1 = (ResultSingleBean) VolleyResponseHelper
+                    .jsonToBean(jsonObject, 8);
+            if (rb1.getRetCode() == 0) {
+                showView(1);
+                listdata = (FreshNewsListBean) rb1.getRetObj();
+                mAdapter = new FragmentFreshAdapter(listdata.getPosts(), imageLoader, options, getActivity());
+                if (listdata.getCount() > listdata
+                        .getPosts().size()) {
+                    mAdapter.setCanLoadMore(false);
+                    mAdapter.setFooterShow(true);
+                } else {
+                    mAdapter.setCanLoadMore(true);
+                }
+                mRecyclerView.setAdapter(mAdapter);
+                loadedfromcachce=true;
+            } else {
+                showView(2);
+
+                CustomToast.showToast(rb1.getRetMessage(), getActivity());
+            }
+        }
+    }
+
     @Override
     public void sucess(JSONObject response, int code) {
         mRefreshLayout.setRefreshing(false);
@@ -113,7 +142,9 @@ public class FragmentFresh extends BaseFragment implements SwipeRefreshLayout.On
                         .jsonToBean(response, 8);
                 if (rb1.getRetCode() == 0) {
                     showView(1);
-                    listdata= (FreshNewsListBean) rb1.getRetObj();
+                    DiskDataHelper.getInstance().saveListToCache("fragment_fresh", response);
+
+                    listdata = (FreshNewsListBean) rb1.getRetObj();
                     mAdapter = new FragmentFreshAdapter(listdata.getPosts(), imageLoader, options, getActivity());
                     if (listdata.getCount() > listdata
                             .getPosts().size()) {
@@ -163,13 +194,14 @@ public class FragmentFresh extends BaseFragment implements SwipeRefreshLayout.On
     @Override
     public void err(String error, int code) {
         mRefreshLayout.setRefreshing(false);
+        if(!loadedfromcachce){
         showView(2);
-
         CustomToast.showToast(error, getActivity());
-    }
+    }}
 
     @Override
     public void onRefresh() {
+        loadedfromcachce=false;
         PageIndex = 1;
         showView(0);
         initData(1);
@@ -199,6 +231,7 @@ public class FragmentFresh extends BaseFragment implements SwipeRefreshLayout.On
         }
 
     }
+
     @Override
     public void onActionBarClick() {
         if (mRecyclerView != null && mAdapter.getItemCount() > 0) {

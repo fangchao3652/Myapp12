@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Library/Library.iml" filepath="$PROJECT_DIR$/Library/Library.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyApplication.iml" filepath="$PROJECT_DIR$/MyApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/greendaogenerater/greendaogenerater.iml" filepath="$PROJECT_DIR$/greendaogenerater/greendaogenerater.iml" />
       <module fileurl="file://$PROJECT_DIR$/myapplication2_flodinglayout/myapplication2_flodinglayout.iml" filepath="$PROJECT_DIR$/myapplication2_flodinglayout/myapplication2_flodinglayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/pushclient/pushclient.iml" filepath="$PROJECT_DIR$/pushclient/pushclient.iml" />
     </modules>

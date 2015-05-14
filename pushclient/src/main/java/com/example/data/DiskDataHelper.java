@@ -15,7 +15,7 @@ import java.util.List;
 
 
 /**
- * Created by Xuzj on 2015/1/19.
+ * Created by fc on 2015/1/19.
  * <p/>
  * 本地数据获取工具类
  */

@@ -1,1 +1,1 @@
-include ':app', ':myapplication2_flodinglayout', ':pushclient', ':Library'
+include ':app', ':myapplication2_flodinglayout', ':pushclient', ':Library', ':greendaogenerater'

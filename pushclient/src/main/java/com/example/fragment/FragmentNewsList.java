@@ -12,10 +12,10 @@ import com.example.Bean.NewsListBean;
 import com.example.Bean.ResultSingleBean;
 import com.example.R;
 import com.example.activity.NewsDetailsActivity_;
-import com.example.activity.WebActivity_;
 import com.example.adapter.FramgentNewsAdapter;
 import com.example.common.CustomToast;
 import com.example.data.DataHelper;
+import com.example.data.DiskDataHelper;
 import com.example.data.PostDataHelper;
 import com.example.data.URLHelper;
 import com.example.data.VolleyResponseHelper;
@@ -53,15 +53,16 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
     TextView tv_loading_empty;
     LinearLayoutManager linearLayoutManager;
     int PageIndex = 1;
+    boolean loadedfromcache = false;
     private NewsListBean listData;
     private FramgentNewsAdapter mAdapter;
     private OnItemClickListener myListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-              NewsDetailsActivity_.intent(getActivity()).id(String.valueOf(listData.getNewsList().get(position).getId())).start();
+            NewsDetailsActivity_.intent(getActivity()).id(String.valueOf(listData.getNewsList().get(position).getId())).start();
 
-          //  WebActivity_.intent(getActivity()).webUrl(String.valueOf(listData.getNewsList().get(position).getNewBodyHtml())).start();
-         //   getActivity().overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_right_out);
+            //  WebActivity_.intent(getActivity()).webUrl(String.valueOf(listData.getNewsList().get(position).getNewBodyHtml())).start();
+            //   getActivity().overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_right_out);
             // GoodsDetailActivity_.intent(getActivity()).goodsSN(listData.getGoodsList().get(position).getGoodsSN()).start();
         }
     };
@@ -70,8 +71,10 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
     void init() {
         initUI();
         showView(0);
+        initByLocalData();
         initData(1);
     }
+
 
     @Click({R.id.view_loading_error})
     void click(View v) {
@@ -95,24 +98,25 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
 
     private void initUI() {
         mRefreshLayout.setOnRefreshListener(this);
-    mRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
-    android.R.color.holo_green_light, android.R.color.holo_orange_light,
-    android.R.color.holo_red_light);
-    linearLayoutManager = new LinearLayoutManager(getActivity());
-    linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-    mRecyclerView.setLayoutManager(linearLayoutManager);
+        mRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light, android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
 
 
-    mRecyclerView.setOnScrollListener(new RecyclerOnScrollListener(linearLayoutManager, mRefreshLayout, mRecyclerView) {
-        @Override
-        public void onLoadMore() {
-            if (mAdapter != null && mAdapter.isCanLoadMore()) {
-                PageIndex++;
-                initData(2);
+        mRecyclerView.setOnScrollListener(new RecyclerOnScrollListener(linearLayoutManager, mRefreshLayout, mRecyclerView) {
+            @Override
+            public void onLoadMore() {
+                if (mAdapter != null && mAdapter.isCanLoadMore()) {
+                    loadedfromcache=false;
+                    PageIndex++;
+                    initData(2);
+                }
             }
-        }
-    });
-}
+        });
+    }
 
     /**
      * 切换视图
@@ -147,8 +151,44 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
 
     @Override
     public void onRefresh() {
+        loadedfromcache = false;
         PageIndex = 1;
         initData(1);
+    }
+
+    private void initByLocalData() {
+        JSONObject jsonObject = DiskDataHelper.getInstance().getListFromCache("fragment_newslist");
+        if (jsonObject != null) {
+            // banner数据成功回调
+            ResultSingleBean rb1 = (ResultSingleBean) VolleyResponseHelper
+                    .jsonToBean(jsonObject, 6);
+            if (rb1.getRetCode() == 0) {
+                listData = (NewsListBean) rb1.getRetObj();
+
+                // 判断是否需要到底部自动加载
+                mAdapter = new FramgentNewsAdapter(listData, getActivity());
+                if (Integer.valueOf(URLHelper.PAGESIZE) > listData
+                        .getNewsList().size()) {
+                    mAdapter.setCanLoadMore(false);
+                    mAdapter.setFooterShow(true);
+                } else {
+                    mAdapter.setCanLoadMore(true);
+                }
+                loadedfromcache = true;
+                mAdapter.setOnItemClickListener(myListener);
+                mRecyclerView.setAdapter(mAdapter);
+            }
+            if (listData != null)
+                if (listData.getNewsList().size() == 0) {
+                    showView(1);
+                } else {
+                    showView(3);
+                }
+        } else {
+            showView(0);
+        }
+
+
     }
 
     @Override
@@ -156,12 +196,13 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
         mRefreshLayout.setRefreshing(false);
         switch (code) {
             case 1:
+
                 // 下拉刷新数据返回处理
                 ResultSingleBean rb1 = (ResultSingleBean) VolleyResponseHelper
                         .jsonToBean(response, 6);
                 if (rb1.getRetCode() == 0) {
                     listData = (NewsListBean) rb1.getRetObj();
-
+                    DiskDataHelper.getInstance().saveListToCache("fragment_newslist", response);
                     // 判断是否需要到底部自动加载
                     mAdapter = new FramgentNewsAdapter(listData, getActivity());
                     if (Integer.valueOf(URLHelper.PAGESIZE) > listData
@@ -220,7 +261,9 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void err(String error, int code) {
         mRefreshLayout.setRefreshing(false);
-        showView(2);
-        CustomToast.showToast(error, getActivity());
+        if (!loadedfromcache) {
+            showView(2);
+            CustomToast.showToast(error, getActivity());
+        }
     }
 }
