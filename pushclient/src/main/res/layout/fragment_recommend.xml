@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.view.CustomScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/srl_newslist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/default_margin">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.example.view.viewpager_fc.CycleViewPager
+                    android:id="@+id/banner_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <com.example.view.viewpager_fc.CycleIndicator
+                    android:id="@+id/guidance_indicator"
+                    app:ci_width="10dp"
+                    app:ci_height="4dp"
+                    app:ci_margin="3dp"
+                    app:ci_animator="@animator/indicator_animator"
+                    app:ci_animator_reverse="@animator/indicator_animator_reverse"
+                    app:ci_drawable="@drawable/black_radius_square"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/default_margin"
+                    android:paddingBottom="@dimen/default_margin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_news_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:scrollbarStyle="@null"
+                android:scrollbars="vertical" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <!--<include
+            android:id="@+id/view_loading"
+            layout="@layout/view_data_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />-->
+    </RelativeLayout>
+</com.example.view.CustomScrollView>

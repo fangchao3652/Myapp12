@@ -42,7 +42,7 @@ import java.util.List;
 
 /**
  * 首页activity
- * Created by zhangxinhao on 2015/1/16.
+ * Created by fc on 2015/1/16.
  */
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActionBarActivity implements DataHelper.DataListener {
