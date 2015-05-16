@@ -7,6 +7,8 @@ import com.example.common.TimeUtils;
 import com.example.greenBean.CacheBean;
 import com.example.greenDao.CacheBeanDao;
 import com.example.greenDao.DaoSession;
+import com.example.greendao_fc.CacheBean1;
+import com.example.greendao_fc.CacheBean1Dao;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,7 +88,7 @@ public class DiskDataHelper {
         if (checkData(key, object)) {
             CacheBeanDao dao = daoSession.getCacheBeanDao();
             CacheBean bean = new CacheBean(key, object.toString(), TimeUtils.getCurrentTimeInLong() + "");
-            dao.delete(bean);
+           // dao.delete(bean);
             long result = dao.insertOrReplace(bean);
             if (result != -1) {
                 return true;
@@ -105,6 +107,7 @@ public class DiskDataHelper {
         JSONObject result = null;
         if (!StringUtils.isBlank(key)) {
             CacheBeanDao dao = daoSession.getCacheBeanDao();
+
             List<CacheBean> list = dao.queryBuilder().where(CacheBeanDao.Properties.JsonKey.eq(key)).list();
             if (list != null && list.size() > 0) {
                 try {

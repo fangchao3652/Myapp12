@@ -3,6 +3,7 @@ package com.example.adapter;
 import android.graphics.Color;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,7 @@ public abstract class FooterAdapter extends BaseAnimAdapter {
     @Override
     public final void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
+        Log.e("position",position+"   "+getContentItemCount());
         if (position == getContentItemCount() && holder.getItemViewType() == TYPE_FOOTER) {
             onBindFooterView(holder, position);
         } else {

@@ -29,7 +29,7 @@ public class CacheBeanDao extends AbstractDao<CacheBean, String> {
         public final static Property CacheTime = new Property(2, String.class, "CacheTime", false, "CACHE_TIME");
     }
 
-    ;
+
 
 
     public CacheBeanDao(DaoConfig config) {
