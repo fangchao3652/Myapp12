@@ -23,11 +23,15 @@ import java.util.List;
 
 
 /**
+ * 右滑关闭 布局
+ *
+ * @author fc
  */
 public class SwipeBackLayout extends FrameLayout {
     private static final String TAG = SwipeBackLayout.class.getSimpleName();
     private View mContentView;
     private int mTouchSlop;
+    private float mScaledEdgeSlop;
     private int downX;
     private int downY;
     private int tempX;
@@ -52,12 +56,14 @@ public class SwipeBackLayout extends FrameLayout {
 
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mScroller = new Scroller(context);
+        mScaledEdgeSlop = ViewConfiguration.get(context).getScaledEdgeSlop();
 
         mShadowDrawable = getResources().getDrawable(R.drawable.shadow_left);
     }
 
     /**
      * 忽略 View v 上面的右滑finish事件，让事件可以传递到view 本身
+     *
      * @param v
      */
     public void addIgnoredViews(View v) {
@@ -136,11 +142,17 @@ public class SwipeBackLayout extends FrameLayout {
                 case MotionEvent.ACTION_DOWN:
                     downX = tempX = (int) ev.getRawX();
                     downY = (int) ev.getRawY();
+
                     break;
                 case MotionEvent.ACTION_MOVE:
                     int moveX = (int) ev.getRawX();
+                    //直邮在左侧边 滑动才能关闭
+                    if (downX > mScaledEdgeSlop) {
+                        return super.onInterceptTouchEvent(ev);
+                    }
+                    //
                     // 满足此条件屏蔽SildingFinishLayout里面子类的touch事件
-                    if (moveX - downX > mTouchSlop
+                    else if (moveX - downX > mTouchSlop
                             && Math.abs((int) ev.getRawY() - downY) < mTouchSlop) {
                         return true;
                     }
@@ -152,6 +164,8 @@ public class SwipeBackLayout extends FrameLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 int moveX = (int) event.getRawX();
@@ -168,6 +182,8 @@ public class SwipeBackLayout extends FrameLayout {
                 break;
             case MotionEvent.ACTION_UP:
                 isSilding = false;
+
+
                 if (mContentView.getScrollX() <= -viewWidth / 2) {
                     isFinish = true;
                     scrollRight();
@@ -179,6 +195,7 @@ public class SwipeBackLayout extends FrameLayout {
         }
 
         return true;
+
     }
 
     /**
