@@ -3,7 +3,7 @@ package com.example.Bean;
 /**
  * Created by fc on 2015/4/27.
  */
-public class NewBaseBean extends BaseBean{
+public class BannerBean extends BaseBean{
     int Id;
     String author;
     String newId;

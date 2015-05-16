@@ -4,15 +4,23 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.Bean.BannerListBean;
+import com.example.Bean.BaseBean;
 import com.example.Bean.NewsListBean;
+import com.example.Bean.ResultListBean;
 import com.example.Bean.ResultSingleBean;
 import com.example.R;
 import com.example.activity.NewsDetailsActivity_;
+import com.example.adapter.BannerAdapter;
 import com.example.adapter.FramgentNewsAdapter;
+import com.example.adapter.FramgentRecommandAdapter;
+import com.example.common.CommonUtils;
 import com.example.common.CustomToast;
 import com.example.data.DataHelper;
 import com.example.data.DiskDataHelper;
@@ -20,10 +28,12 @@ import com.example.data.PostDataHelper;
 import com.example.data.URLHelper;
 import com.example.data.VolleyResponseHelper;
 import com.example.view.CustomScrollView;
+import com.example.view.FcScrollView;
 import com.example.view.OnItemClickListener;
 import com.example.view.RecyclerOnScrollListener;
 import com.example.view.viewpager_fc.CycleIndicator;
 import com.example.view.viewpager_fc.CycleViewPager;
+import com.nineoldandroids.view.ViewHelper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -31,6 +41,8 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by fc on 2015/4/27.
@@ -40,35 +52,28 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     @FragmentArg
     int type = 1;
     @ViewById(R.id.main_scroll)
-    CustomScrollView main_scroll;
+    FcScrollView main_scroll;
 
     @ViewById(R.id.rv_news_list)
     RecyclerView mRecyclerView;
     @ViewById(R.id.srl_newslist)
     SwipeRefreshLayout mRefreshLayout;
+@ViewById(R.id.banner_rl)
+  RelativeLayout  banner_rl;
 
-    @ViewById(R.id.view_loading)
-    RelativeLayout view_loading;//加载视图
-    @ViewById(R.id.view_loading_default)
-    LinearLayout view_loading_default;
-    @ViewById(R.id.view_loading_error)
-    LinearLayout view_loading_error;
-    @ViewById(R.id.view_loading_empty)
-    LinearLayout view_loading_empty;
-    @ViewById(R.id.tv_loading_empty)
-    TextView tv_loading_empty;
 
     @ViewById(R.id.banner_pager)
     CycleViewPager banner_pager;
     @ViewById(R.id.guidance_indicator)
     CycleIndicator guidance_indicator;
-
+    BannerListBean bannerData;//fc 先用的news的数据
+    BannerAdapter bannerAdapter;
 
     LinearLayoutManager linearLayoutManager;
     int PageIndex = 1;
     boolean loadedfromcache = false;
     private NewsListBean listData;
-    private FramgentNewsAdapter mAdapter;
+    private FramgentRecommandAdapter mAdapter;
     private OnItemClickListener myListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
@@ -83,8 +88,9 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     @AfterViews
     void init() {
         initUI();
-        showView(0);
+        //showView(0);
         initByLocalData();
+        initData(0);//焦点图
         initData(1);
     }
 
@@ -94,7 +100,7 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
         switch (v.getId()) {
             case R.id.view_loading_error:
                 PageIndex = 1;
-                showView(0);
+               // showView(0);
                 initData(1);
                 break;
         }
@@ -130,43 +136,28 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
             }
         });
 
-        main_scroll.setOnScrollListener(new CustomScrollView.OnScrollListener() {
+        main_scroll.setScrollViewListener(new FcScrollView.ScrollviewListener() {
             @Override
-            public void onScroll(int scrollY) {
-
+            public void onScrollChanged(FcScrollView scrollView, int x, int y, int oldx, int oldy) {
+                ViewHelper.setTranslationY(banner_rl, y / 3);
             }
         });
 
+
+        ViewGroup.LayoutParams mParams1 = banner_pager.getLayoutParams();
+        mParams1.width = CommonUtils.getScreenWidthPX(getActivity());
+        mParams1.height = CommonUtils.getScreenWidthPX(getActivity()) * 34 / 72;
+        banner_pager.setLayoutParams(mParams1);
+        banner_pager.setOffscreenPageLimit(5);
+
     }
 
-    /**
-     * 切换视图
-     *
-     * @param type 0:加载中 1:加载为空 2:内容失败 3:加载成功
-     */
-    private void showView(int type) {
-        switch (type) {
-            case 0:
-                view_loading_default.setVisibility(View.VISIBLE);
-                view_loading_error.setVisibility(View.GONE);
-                view_loading_empty.setVisibility(View.GONE);
-                view_loading.setVisibility(View.VISIBLE);
-                break;
-            case 1:
-                view_loading_default.setVisibility(View.GONE);
-                view_loading_error.setVisibility(View.GONE);
-                view_loading_empty.setVisibility(View.VISIBLE);
-                view_loading.setVisibility(View.VISIBLE);
-                break;
-            case 2:
-                view_loading_default.setVisibility(View.GONE);
-                view_loading_error.setVisibility(View.VISIBLE);
-                view_loading_empty.setVisibility(View.GONE);
-                view_loading.setVisibility(View.VISIBLE);
-                break;
-            case 3:
-                view_loading.setVisibility(View.GONE);
-                break;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(bannerAdapter != null){
+            banner_pager.startAutoScroll();
         }
     }
 
@@ -187,7 +178,7 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
                 listData = (NewsListBean) rb1.getRetObj();
 
                 // 判断是否需要到底部自动加载
-                mAdapter = new FramgentNewsAdapter(listData, getActivity());
+                mAdapter = new FramgentRecommandAdapter(listData, getActivity());
                 if (Integer.valueOf(URLHelper.PAGESIZE) > listData
                         .getNewsList().size()) {
                     mAdapter.setCanLoadMore(false);
@@ -201,12 +192,12 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
             }
             if (listData != null)
                 if (listData.getNewsList().size() == 0) {
-                    showView(1);
+                 //   showView(1);
                 } else {
-                    showView(3);
+                  //  showView(3);
                 }
         } else {
-            showView(0);
+           // showView(0);
         }
 
 
@@ -216,6 +207,23 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     public void sucess(JSONObject response, int code) {
         mRefreshLayout.setRefreshing(false);
         switch (code) {
+            case 0:
+                // banner数据成功回调
+                ResultSingleBean rb10 = (ResultSingleBean) VolleyResponseHelper
+                        .jsonToBean(response, 3);//先用的recycleview   的数据
+                if (rb10.getRetCode() == 0) {
+
+                    DiskDataHelper.getInstance().saveListToCache("recommend_banner", response);
+                    bannerData = (BannerListBean) rb10.getRetObj();
+                    bannerAdapter = new BannerAdapter(bannerData.getNewsList(),
+                            getFragmentManager());
+                    banner_pager.setAdapter(bannerAdapter);
+                    banner_pager.startAutoScroll();
+                    guidance_indicator.setViewPager(banner_pager);
+                }
+                break;
+
+
             case 1:
 
                 // 下拉刷新数据返回处理
@@ -225,7 +233,7 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
                     listData = (NewsListBean) rb1.getRetObj();
                     DiskDataHelper.getInstance().saveListToCache("fragment_newslist", response);
                     // 判断是否需要到底部自动加载
-                    mAdapter = new FramgentNewsAdapter(listData, getActivity());
+                    mAdapter = new FramgentRecommandAdapter(listData, getActivity());
                     if (Integer.valueOf(URLHelper.PAGESIZE) > listData
                             .getNewsList().size()) {
                         mAdapter.setCanLoadMore(false);
@@ -235,12 +243,14 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
                     }
                     mAdapter.setOnItemClickListener(myListener);
                     mRecyclerView.setAdapter(mAdapter);
+                    refreshRVLayout(listData.getNewsList().size());
+
                 }
                 if (listData != null)
                     if (listData.getNewsList().size() == 0) {
-                        showView(1);
+                      //  showView(1);
                     } else {
-                        showView(3);
+                      //  showView(3);
                     }
 
                 break;
@@ -263,7 +273,7 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
                         listData.addNewsBeans(b.getNewsList());
                         mAdapter.notifyDataSetChanged();
                     }
-
+                    refreshRVLayout(listData.getNewsList().size());
                 } else {
 
                     if (mAdapter != null) {
@@ -279,11 +289,20 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
         }
     }
 
+    private void refreshRVLayout(int num) {
+        ViewGroup.LayoutParams mParams = mRecyclerView.getLayoutParams();
+        mParams.height =  CommonUtils.dipToPixels(280)
+        * num + CommonUtils.dipToPixels(80);
+
+        mRecyclerView.setLayoutParams(mParams);
+    }
+
+
     @Override
     public void err(String error, int code) {
         mRefreshLayout.setRefreshing(false);
         if (!loadedfromcache) {
-            showView(2);
+           // showView(2);
             CustomToast.showToast(error, getActivity());
         }
     }

@@ -1,6 +1,7 @@
 package com.example.data;
 
 import com.example.Bean.Author;
+import com.example.Bean.BannerListBean;
 import com.example.Bean.CustomFields;
 import com.example.Bean.FreshNews;
 import com.example.Bean.FreshNewsDetailsBean;
@@ -65,7 +66,9 @@ public class VolleyResponseHelper {
             case 4:
                 rBean = login(json);
                 break;
-
+            case 3:
+                rBean = getBannerList(json);
+                break;
             case 6:
                 rBean = getNewsList(json);
                 break;
@@ -268,6 +271,29 @@ public class VolleyResponseHelper {
                 if (message != null) {
                     bean = gson.fromJson(message.toString(),
                             NewsListBean.class);
+                }
+                rBean.setRetObj(bean);
+            }
+
+        } catch (Exception e) {
+            rBean.setRetCode(1);
+            rBean.setRetMessage("数据异常");
+            return rBean;
+        }
+        return rBean;
+    }
+private static ResultSingleBean getBannerList(JSONObject json) {
+        ResultSingleBean rBean = new ResultSingleBean();
+        try {
+            rBean.setRetCode(json.optInt(JSON_ERRORCODE));
+            rBean.setRetMessage(json.optString(JSON_MESSAGE));
+            if (rBean.getRetCode() == 0) {
+                Gson gson = new Gson();
+                JSONObject message = json.optJSONObject(JSON_DATA);
+                BannerListBean bean = null;
+                if (message != null) {
+                    bean = gson.fromJson(message.toString(),
+                            BannerListBean.class);
                 }
                 rBean.setRetObj(bean);
             }

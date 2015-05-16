@@ -28,6 +28,7 @@ import com.example.data.DataHelper;
 import com.example.fragment.FragmentFresh;
 import com.example.fragment.FragmentFresh_;
 import com.example.fragment.FragmentNewsList_;
+import com.example.fragment.FragmentRecommend_;
 import com.example.fragment.FragmentRight_;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -101,7 +102,7 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
     private void initData() {
         fragments = new ArrayList<>();
         titles = new ArrayList<>();
-        fragments.add(FragmentRight_.builder().build());
+        fragments.add(FragmentRecommend_.builder().build());
         titles.add("校园公告");
 
         fragments.add(FragmentNewsList_.builder().build());

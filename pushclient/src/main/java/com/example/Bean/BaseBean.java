@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 基类bean
  * 
- * @author zhangxh
+ * @author fc
  * 
  */
 public class BaseBean implements Serializable {
