@@ -31,6 +31,7 @@ import com.example.view.CustomScrollView;
 import com.example.view.FcScrollView;
 import com.example.view.OnItemClickListener;
 import com.example.view.RecyclerOnScrollListener;
+import com.example.view.ShowMaxImageView;
 import com.example.view.viewpager_fc.CycleIndicator;
 import com.example.view.viewpager_fc.CycleViewPager;
 import com.nineoldandroids.view.ViewHelper;
@@ -61,6 +62,16 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
 @ViewById(R.id.banner_rl)
   RelativeLayout  banner_rl;
 
+    @ViewById(R.id.view_loading)
+    RelativeLayout view_loading;//加载视图
+    @ViewById(R.id.view_loading_default)
+    LinearLayout view_loading_default;
+    @ViewById(R.id.view_loading_error)
+    LinearLayout view_loading_error;
+    @ViewById(R.id.view_loading_empty)
+    LinearLayout view_loading_empty;
+    @ViewById(R.id.tv_loading_empty)
+    TextView tv_loading_empty;
 
     @ViewById(R.id.banner_pager)
     CycleViewPager banner_pager;
@@ -88,8 +99,8 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     @AfterViews
     void init() {
         initUI();
-        //showView(0);
-        initByLocalData();
+        showView(0);
+       // initByLocalData();//缓存数据
         initData(0);//焦点图
         initData(1);
     }
@@ -100,12 +111,41 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
         switch (v.getId()) {
             case R.id.view_loading_error:
                 PageIndex = 1;
-               // showView(0);
+               showView(0);
                 initData(1);
                 break;
         }
     }
-
+    /**
+     * 切换视图
+     *
+     * @param type 0:加载中 1:加载为空 2:内容失败 3:加载成功
+     */
+    private void showView(int type) {
+        switch (type) {
+            case 0:
+                view_loading_default.setVisibility(View.VISIBLE);
+                view_loading_error.setVisibility(View.GONE);
+                view_loading_empty.setVisibility(View.GONE);
+                view_loading.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                view_loading_default.setVisibility(View.GONE);
+                view_loading_error.setVisibility(View.GONE);
+                view_loading_empty.setVisibility(View.VISIBLE);
+                view_loading.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                view_loading_default.setVisibility(View.GONE);
+                view_loading_error.setVisibility(View.VISIBLE);
+                view_loading_empty.setVisibility(View.GONE);
+                view_loading.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                view_loading.setVisibility(View.GONE);
+                break;
+        }
+    }
     private void initData(int tag) {
         mRefreshLayout.setRefreshing(true);
         // 搜索数据
@@ -117,6 +157,7 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
 
     private void initUI() {
         mRefreshLayout.setOnRefreshListener(this);
+
         mRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -169,6 +210,11 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     }
 
     private void initByLocalData() {
+        mRefreshLayout.setRefreshing(true);
+        JSONObject jsonObject_banner = DiskDataHelper.getInstance().getListFromCache("recommend_banner");
+
+
+
         JSONObject jsonObject = DiskDataHelper.getInstance().getListFromCache("fragment_newslist");
         if (jsonObject != null) {
             // banner数据成功回调
@@ -192,12 +238,14 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
             }
             if (listData != null)
                 if (listData.getNewsList().size() == 0) {
-                 //   showView(1);
+                    showView(1);
                 } else {
-                  //  showView(3);
+                    showView(3);
+                    mRefreshLayout.setRefreshing(false);
+
                 }
         } else {
-           // showView(0);
+            showView(0);
         }
 
 
@@ -206,6 +254,8 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void sucess(JSONObject response, int code) {
         mRefreshLayout.setRefreshing(false);
+        if(banner_pager!=null)
+        banner_pager.startAutoScroll();
         switch (code) {
             case 0:
                 // banner数据成功回调
@@ -248,9 +298,9 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
                 }
                 if (listData != null)
                     if (listData.getNewsList().size() == 0) {
-                      //  showView(1);
+                        showView(1);
                     } else {
-                      //  showView(3);
+                        showView(3);
                     }
 
                 break;
@@ -302,7 +352,7 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     public void err(String error, int code) {
         mRefreshLayout.setRefreshing(false);
         if (!loadedfromcache) {
-           // showView(2);
+            showView(2);
             CustomToast.showToast(error, getActivity());
         }
     }

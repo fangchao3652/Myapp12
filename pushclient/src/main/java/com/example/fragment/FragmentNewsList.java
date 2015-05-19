@@ -71,7 +71,7 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
     void init() {
         initUI();
         showView(0);
-        initByLocalData();
+       initByLocalData();
         initData(1);
     }
 
@@ -88,6 +88,7 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
     }
 
     private void initData(int tag) {
+
         mRefreshLayout.setRefreshing(true);
         // 搜索数据
         DataHelper piclist = new PostDataHelper(URLHelper.getURL(
@@ -157,6 +158,7 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
     }
 
     private void initByLocalData() {
+        mRefreshLayout.setRefreshing(true);
         JSONObject jsonObject = DiskDataHelper.getInstance().getListFromCache("fragment_newslist");
         if (jsonObject != null) {
             // banner数据成功回调
@@ -183,6 +185,8 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
                     showView(1);
                 } else {
                     showView(3);
+                    mRefreshLayout.setRefreshing(false);
+
                 }
         } else {
             showView(0);
