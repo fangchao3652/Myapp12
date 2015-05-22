@@ -33,6 +33,8 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * 登录activity
  * Created by zhangxinhao on 2015/2/3.
@@ -58,10 +60,10 @@ public class LoginActivity extends BaseActionBarActivity implements DataHelper.D
     @AfterViews
     void initView() {
         cb.setChecked(SharedPreferencesUtils.getInstance().getIsSavePw());
-        UserBean i=SharedPreferencesUtils.getInstance().getUserMessage();
+        UserBean i = SharedPreferencesUtils.getInstance().getUserMessage();
         accountEt.setText(SharedPreferencesUtils.getInstance().getUserMessage()
                 .getMemberId());
-      if (SharedPreferencesUtils.getInstance().getIsSavePw()) {
+        if (SharedPreferencesUtils.getInstance().getIsSavePw()) {
             // 保存密码
             pwdEt.setText(SharedPreferencesUtils.getInstance().getUserMessage()
                     .getMemberPwd());
@@ -143,7 +145,7 @@ public class LoginActivity extends BaseActionBarActivity implements DataHelper.D
                 if (rb.getRetCode() == 0) {
                     // 登陆成功
                     UserBean bean = (UserBean) rb.getRetObj();
-                     bean.setMemberPwd(password);
+                    bean.setMemberPwd(password);
 
                     SharedPreferencesUtils.getInstance().editUserMessage(bean);
                     setResult(RESULT_OK);
@@ -151,15 +153,19 @@ public class LoginActivity extends BaseActionBarActivity implements DataHelper.D
                     if (materialDialog != null)
                         materialDialog.dismiss();
                     //CustomToast.showToast("登录成功", this);
-                    MqttService.AddTopic(bean.getMemberId());
+                    // MqttService.AddTopic(bean.getMemberId());
+                    List<String> topiclist = bean.getTopicList();
+                    for (int i = 0; i < topiclist.size(); i++) {
+                        MqttService.AddTopic(topiclist.get(i));
+                    }
                     MqttService.actionStop(this);
                     //1s后重新启动
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Log.e("login","重新启动"+"   ");
-                            for(int i=0;i<MqttService.getTopicFilters().length;i++){
-                                Log.e("cq",MqttService.getTopicFilters()[i]);
+                            Log.e("login", "重新启动" + "   ");
+                            for (int i = 0; i < MqttService.getTopicFilters().length; i++) {
+                                Log.e("cq", MqttService.getTopicFilters()[i]);
                             }
                             MqttService.actionStart(LoginActivity.this);
                         }

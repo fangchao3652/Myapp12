@@ -1,5 +1,6 @@
 package com.example.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import com.example.Bean.ResultSingleBean;
 import com.example.Bean.UserBean;
 import com.example.R;
+import com.example.activity.CourseActivity;
 import com.example.activity.LoginActivity_;
 import com.example.activity.SettingActivity_;
 import com.example.common.CommonUtils;
@@ -40,7 +42,7 @@ import org.json.JSONObject;
  * 左滑个人中心
  */
 @EFragment(R.layout.fragment_menu_right)
-public class FragmentRight  extends Fragment implements DataHelper.DataListener {
+public class FragmentRight extends Fragment implements DataHelper.DataListener {
 
     @ViewById(R.id.menu_right_fragment_personYes)
     LinearLayout personYesV;//登录后
@@ -54,8 +56,13 @@ public class FragmentRight  extends Fragment implements DataHelper.DataListener 
     SimpleDraweeView headImgV;//个人头像
     @ViewById(R.id.menu_right_fragment_personName)
     TextView personNameV;//会员昵称
+    @ViewById(R.id.menu_right_fragment_course)
+    Button btn_course;
+
     @ViewById(R.id.menu_right_fragment_setting)
     Button btn_setting;//设置
+
+
     @ViewById(R.id.menu_right_fragment_more)
     Button btn_more;//更多
     @ViewById(R.id.menu_right_fragment_versionName)
@@ -164,7 +171,7 @@ public class FragmentRight  extends Fragment implements DataHelper.DataListener 
     }
 
     @Click({R.id.view_login, R.id.view_register, R.id.menu_img_head,
-            R.id.menu_right_fragment_setting, R.id.menu_right_fragment_more})
+            R.id.menu_right_fragment_setting, R.id.menu_right_fragment_more, R.id.menu_right_fragment_course})
     void click(View view) {
         switch (view.getId()) {
             case R.id.view_login://登录
@@ -177,11 +184,16 @@ public class FragmentRight  extends Fragment implements DataHelper.DataListener 
                 //  UserCenterActivity_.intent(getActivity()).start();
 
             case R.id.menu_right_fragment_setting://系统设置
-                  SettingActivity_.intent(getActivity()).start();
+                SettingActivity_.intent(getActivity()).start();
                 break;
             case R.id.menu_right_fragment_more://更多
                 // MoreActivity_.intent(getActivity()).start();
                 break;
+
+            case R.id.menu_right_fragment_course:
+                startActivity(new Intent(getActivity(), CourseActivity.class));
+                break;
+
         }
     }
 

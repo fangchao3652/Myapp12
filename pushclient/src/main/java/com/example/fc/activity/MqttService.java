@@ -15,6 +15,7 @@ import android.os.IBinder;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
+import com.example.Bean.UserBean;
 import com.example.common.SharedPreferencesUtils;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -27,14 +28,14 @@ import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
-import java.util.TreeSet;
 
 
 /**
  * @author fangchao
- * 推送服务
+ *         推送服务
  */
 public class MqttService extends Service implements MqttCallback {
 
@@ -140,8 +141,12 @@ public class MqttService extends Service implements MqttCallback {
         MqttService.qos = qos;
     }
 
+    public static void setTopicFilters(String[] topicFilters) {
+        MqttService.topicFilters = topicFilters;
+    }
+
     public static String[] AddTopic(String topic) {
-        Set<String> topiclist = new TreeSet<>();
+        List<String> topiclist = new ArrayList<>();
 
         for (int i = 0; i < getTopicFilters().length; i++) {
             topiclist.add(new String(getTopicFilters()[i]));
@@ -151,8 +156,9 @@ public class MqttService extends Service implements MqttCallback {
 
 
         int m = 0;
-
-        SharedPreferencesUtils.getInstance().putTopics(topiclist);//添加到本地
+        UserBean u = SharedPreferencesUtils.getInstance().getUserMessage();
+        u.setTopicList(topiclist);
+        SharedPreferencesUtils.getInstance().editUserMessage(u);//添加到本地
         topicFilters = topiclist.toArray(topicFilters);
         return topicFilters;
     }
@@ -233,7 +239,7 @@ public class MqttService extends Service implements MqttCallback {
      * 尝试启动推送服务器，并注册网络改变接收器
      */
     private synchronized void start() {
-        if(mConnHandler==null ){
+        if (mConnHandler == null) {
             HandlerThread thread = new HandlerThread(MQTT_THREAD_NAME);
             thread.start();
             mConnHandler = new Handler(thread.getLooper());
@@ -242,7 +248,7 @@ public class MqttService extends Service implements MqttCallback {
             Log.e(DEBUG_TAG, "尝试启动推送服务，但推送服务已经启动");
             Log.e(DEBUG_TAG, "《《《《《《      reconnectIfNecessary》》》》》》》》》》");
             reconnectIfNecessary();
-           return;
+            return;
         }
 
         if (hasScheduledKeepAlives()) {
@@ -297,32 +303,33 @@ public class MqttService extends Service implements MqttCallback {
             e.printStackTrace();
         }
 
-        if(mConnHandler!=null)
-        mConnHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if(mClient!=null) {
-                        mClient.connect();
-                        //fc
-                        topicFilters = castSet2Array(SharedPreferencesUtils.getInstance().getTopics());
-                        mClient.subscribe(topicFilters, new int[topicFilters.length]);
+        if (mConnHandler != null)
+            mConnHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (mClient != null) {
+                            mClient.connect();
+                            //fc
+                            topicFilters = castSet2Array(SharedPreferencesUtils.getInstance().getUserMessage().getTopicList());
+                            mClient.subscribe(topicFilters, new int[topicFilters.length]);
 
-                        mClient.setCallback(MqttService.this);
+                            mClient.setCallback(MqttService.this);
 
-                        mStarted = true; // Service is now connected
+                            mStarted = true; // Service is now connected
 
-                        Log.e(DEBUG_TAG, "成功连接推送服务器并启动心跳包闹钟");
+                            Log.e(DEBUG_TAG, "成功连接推送服务器并启动心跳包闹钟");
 
-                        startKeepAlives();
-                    }        } catch (MqttException e) {
-                    e.printStackTrace();
+                            startKeepAlives();
+                        }
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
     }
 
-    private String[] castSet2Array(Set<String> topicset) {
+    private String[] castSet2Array(List<String> topicset) {
         String topicArray[] = new String[topicset.size()];
         int n = 0;
         for (String ss : topicset) {
@@ -374,9 +381,8 @@ public class MqttService extends Service implements MqttCallback {
                 ex.printStackTrace();
                 stop();
                 reconnectIfNecessary();
-            }
-            catch (Exception e){
-                Log.e("exception","aaaaaaaaaaa");
+            } catch (Exception e) {
+                Log.e("exception", "aaaaaaaaaaa");
             }
         }
     }
@@ -384,11 +390,11 @@ public class MqttService extends Service implements MqttCallback {
     /**
      * 重新连接如果他是必须的
      */
-    private  synchronized void reconnectIfNecessary() {
+    private synchronized void reconnectIfNecessary() {
 
         if (mStarted && mClient == null) {
             connect();
-        } else  {
+        } else {
             Log.e(DEBUG_TAG, "重新连接没有启动，mStarted:" + String.valueOf(mStarted) + " mClient:" + mClient);
             connect();
         }
@@ -449,7 +455,7 @@ public class MqttService extends Service implements MqttCallback {
         message.setQos(MQTT_KEEP_ALIVE_QOS);
 
 
-        return  mKeepAliveTopic.publish(message);
+        return mKeepAliveTopic.publish(message);
     }
 
     /**

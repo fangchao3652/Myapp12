@@ -158,6 +158,7 @@ public class SettingActivity extends BaseActionBarActivity {
                 break;
             case R.id.person_detail_exit:
                 SharedPreferencesUtils.getInstance().cleanUserMessage();
+                MqttService.actionStop(this);
                 setResult(RESULT_OK);
                 finish();
                 // overridePendingTransition(R.anim.base_slide_right_in, R.anim.base_slide_right_out);

@@ -6,7 +6,10 @@ import android.content.SharedPreferences.Editor;
 
 import com.example.Bean.UserBean;
 import com.example.application.MyApplication;
+import com.example.fc.activity.MqttService;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -33,6 +36,7 @@ public class SharedPreferencesUtils {
     public static final String LOGIN_USER_PWD = SHAREDPREFERENCES + "user_pwd";// 用户登录密码key默认值“”
     public static final String ISSAVE_PW = SHAREDPREFERENCES + "issave_pw";// 是否保存密码
     public static final String LOGIN_USER_ID = SHAREDPREFERENCES + "user_id";// 用户idkey
+    public static final String LOGIN_USER_Topiclist = SHAREDPREFERENCES + "user_topics";//用户订阅的主题
     // 默认值“”
     public static final String LOGIN_USER_HEAD = SHAREDPREFERENCES
             + "user_head";// 用户头像key 默认值“”
@@ -156,13 +160,19 @@ public class SharedPreferencesUtils {
      *
      * @return
      */
-    public boolean editUserMessage(UserBean uBean) {
+    public boolean editUserMessage(final UserBean uBean) {
         boolean editflg = false;
         mEditor.putString(LOGIN_USER_NAME, uBean.getSName());
         mEditor.putString(LOGIN_USER_ID, uBean.getMemberId());
         if (!StringUtils.isBlank(uBean.getMemberPwd())) {
             mEditor.putString(LOGIN_USER_PWD, uBean.getMemberPwd());
         }
+        mEditor.putStringSet(LOGIN_USER_Topiclist,null);
+        mEditor.putStringSet(LOGIN_USER_Topiclist, new HashSet<String>(){{
+            for(int i=0;i<uBean.getTopicList().size();i++){
+                add(uBean.getTopicList().get(i));
+            }}
+            });
       /*  mEditor.putString(LOGIN_USER_LEVEL, uBean.getLevel());
         mEditor.putString(LOGIN_USER_PRICE, uBean.getPrice());
         mEditor.putString(LOGIN_USER_SCORES, uBean.getScores());
@@ -189,6 +199,12 @@ public class SharedPreferencesUtils {
         uBean.setSName(sharedPreferences.getString(LOGIN_USER_NAME, ""));
         uBean.setMemberId(sharedPreferences.getString(LOGIN_USER_ID, ""));
         uBean.setMemberPwd(sharedPreferences.getString(LOGIN_USER_PWD, ""));
+
+        Set<String> defStringsault = new TreeSet<>();
+        defStringsault.add("Fangchao");
+        Set set = sharedPreferences.getStringSet(LOGIN_USER_Topiclist, defStringsault);
+        if (set != null)
+            uBean.setTopicList(new ArrayList<String>(set));
       /*  uBean.setPassWord(sharedPreferences.getString(LOGIN_USER_PWD, ""));
         uBean.setLevel(sharedPreferences.getString(LOGIN_USER_LEVEL, ""));
         uBean.setPrice(sharedPreferences.getString(LOGIN_USER_PRICE, ""));
@@ -227,6 +243,8 @@ public class SharedPreferencesUtils {
         mEditor.putString(LOGIN_USER_NODELIVERY, "");
         mEditor.putString(LOGIN_USER_EAID, "");
         mEditor.putString(LOGIN_USER_CARTCOUNT, "");
+        MqttService.setTopicFilters(new String[]{"Fangchao"});
+      mEditor.putStringSet(LOGIN_USER_Topiclist, new HashSet<String>(){{add("Fangchao");}});
         // 是否已经登陆
         mEditor.putBoolean(LOGIN_USER_LOGIN, false);
         editflg = mEditor.commit();

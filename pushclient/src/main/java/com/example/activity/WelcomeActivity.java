@@ -12,6 +12,8 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 
+import java.util.List;
+
 
 /**
  * 欢迎界面
@@ -31,8 +33,12 @@ public class WelcomeActivity extends BaseActivity {
 if(SharedPreferencesUtils.getInstance().isLogin()){
   //  MqttService.actionStop(this);
     //添加主题
-    MqttService.AddTopic(SharedPreferencesUtils.getInstance().getUserMessage().getMemberId());
-    MqttService.AddTopic("计算机112");
+   /* MqttService.AddTopic(SharedPreferencesUtils.getInstance().getUserMessage().getMemberId());
+    MqttService.AddTopic("计算机112");*/
+    List<String> topiclist=SharedPreferencesUtils.getInstance().getUserMessage().getTopicList();
+    for(int i=0;i<topiclist.size();i++){
+        MqttService.AddTopic(topiclist.get(i));
+    }
     MqttService.actionStart(this);
 }
 
