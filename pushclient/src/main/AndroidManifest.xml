@@ -87,6 +87,11 @@
             android:label="课程表"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.CourseDetailsActivity_"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="课程表"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.SettingActivity_"
             android:configChanges="keyboardHidden|orientation"
             android:label="设置"

@@ -241,8 +241,8 @@ public class FragmentRight extends Fragment implements DataHelper.DataListener {
      */
     private void initData() {
         if (SharedPreferencesUtils.getInstance().isLogin()) {
-            mDataHelper = new PostDataHelper(URLHelper.getURL(
-                    "", URLHelper.M_LOGIN),
+            mDataHelper =new PostDataHelper(URLHelper.getURL(
+                    URLHelper.MOUDLE_Student, URLHelper.M_LOGIN),
                     URLHelper.getLoginParams(SharedPreferencesUtils.getInstance().getUserMessage().getMemberId().trim(), SharedPreferencesUtils.getInstance().getUserMessage().getMemberPwd(), "a123213121313213131"), this, 0);
             mDataHelper.execute();
         }

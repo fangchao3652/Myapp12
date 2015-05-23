@@ -3,7 +3,6 @@ package com.example.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +23,6 @@ import com.example.data.PostDataHelper;
 import com.example.data.URLHelper;
 import com.example.data.VolleyResponseHelper;
 
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
 import org.json.JSONObject;
 
 /**
@@ -145,9 +142,10 @@ public class CourseActivity extends BaseActionBarActivity implements DataHelper.
         CustomToast.showToast(error, this);
     }
 
-    public  void OnClick(View v){
-        if(v.getTag()!=null){
-            Log.e("onclick",((Course)v.getTag()).getCourseName());
+    public void OnClick(View v) {
+        if (v.getTag() != null) {
+            //// Log.e("onclick",((Course)v.getTag()).getCourseName());
+            CourseDetailsActivity_.intent(this).courseBean((Course) v.getTag()).start();
         }
     }
 
