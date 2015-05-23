@@ -2,6 +2,7 @@ package com.example.data;
 
 import com.example.Bean.Author;
 import com.example.Bean.BannerListBean;
+import com.example.Bean.CourseListBean;
 import com.example.Bean.CustomFields;
 import com.example.Bean.FreshNews;
 import com.example.Bean.FreshNewsDetailsBean;
@@ -49,7 +50,7 @@ public class VolleyResponseHelper {
      *             登陆5所有分类6获取news列表7获取news详情8新鲜事9获取新鲜事详情10获取购物车11获得订单列表12获取订单详情13获取优惠券列表
      *             14获取收货地址列表15获取全部省市区16获取默认收货地址(包含相关的支付方式、配送方式)17
      *             根据地区和支付方式获得支付方式及送货方式18获得所有开票信息19获取运费20站内消息21我的收藏22支付宝数据23待评价24获取银联支付数据25优惠券详情
-     *             26获取订单物流信息27获取搜索热词28检查更新29注册30获取优惠券是否可用信息31获取活动详细信息32今日特价列表信息33精品特卖商品列表34精品特卖列表
+     *             26获取订单物流信息27获取搜索热词28检查更新29注册30获取优惠券是否可用信息 31课程表        32今日特价列表信息33精品特卖商品列表34精品特卖列表
      *             35首页商品分组基础数据36海外直邮国家基础数据37保税区仓库基础数据38首页推荐39购物车列表40提交订单41修改站内消息为已读42所有仓库的支付方式
      *             43获取支付相关数据
      *             <p/>
@@ -83,6 +84,9 @@ public class VolleyResponseHelper {
                 break;
             case 29:
                 rBean = register(json);
+                break;
+            case 31://课程表
+                rBean = getCourses(json);
                 break;
 
             default:
@@ -282,6 +286,37 @@ public class VolleyResponseHelper {
         }
         return rBean;
     }
+
+
+
+
+    private static ResultSingleBean getCourses(JSONObject json) {
+        ResultSingleBean rBean = new ResultSingleBean();
+        try {
+            rBean.setRetCode(json.optInt(JSON_ERRORCODE));
+            rBean.setRetMessage(json.optString(JSON_MESSAGE));
+            if (rBean.getRetCode() == 0) {
+                Gson gson = new Gson();
+                JSONObject message = json.optJSONObject(JSON_DATA);
+                CourseListBean bean = null;
+                if (message != null) {
+                    bean = gson.fromJson(message.toString(),
+                            CourseListBean.class);
+                }
+                rBean.setRetObj(bean);
+            }
+
+        } catch (Exception e) {
+            rBean.setRetCode(1);
+            rBean.setRetMessage("数据异常");
+            return rBean;
+        }
+        return rBean;
+    }
+
+
+
+
 private static ResultSingleBean getBannerList(JSONObject json) {
         ResultSingleBean rBean = new ResultSingleBean();
         try {

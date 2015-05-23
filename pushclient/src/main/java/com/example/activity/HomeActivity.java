@@ -101,17 +101,17 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
 
     private void initData() {
         fragments = new ArrayList<>();
-        titles = new ArrayList<>();
-        fragments.add(FragmentRecommend_.builder().build());
-        titles.add("校园公告");
+        titles = new ArrayList<>();   //0.科大要闻  1.校园传真   2.媒体科大 3.校园公告  4.校内通知  5 学术动态   6.banner
+        fragments.add(FragmentRecommend_.builder().type(3).build());
+        titles.add("校园公告");  //里面包含 banner
 
-        fragments.add(FragmentNewsList_.builder().build());
+        fragments.add(FragmentNewsList_.builder().type(0).build());
         titles.add("科大要闻");
 
         fragments.add(FragmentFresh_.builder().build());
         titles.add("新鲜事");
 
-        fragments.add(FragmentFresh_.builder().build());
+        fragments.add(FragmentNewsList_.builder().type(5).build());
         titles.add("学术动态");
 
     }

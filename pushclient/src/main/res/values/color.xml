@@ -44,4 +44,5 @@
     <color name="md_material_pink">#faccdb</color>
     <color name="md_material_pink_press">#F6A9C2</color>
     <color name="md_material_no">#e0e0e0</color>
+    <color name="list_tab_blue">#ff3b95e8</color>
 </resources>

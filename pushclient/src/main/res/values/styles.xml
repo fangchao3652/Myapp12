@@ -32,4 +32,50 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
+    <style name="wrap_parent_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="detail_course_left_text" parent="@style/wrap_parent_style">
+        <item name="android:textSize">14.0dip</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">10.0dip</item>
+    </style>
+
+    <style name="detail_course_item_layout">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">50.0dip</item>
+    </style>
+    <style name="general_wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="general_list_tab_blue" parent="@style/general_list_tab">
+        <item name="android:textColor">@color/list_tab_blue</item>
+        <item name="android:background">@drawable/ic_tab_background_blue</item>
+    </style>
+
+    <style name="general_list_tab" parent="@style/general_wrap">
+        <item name="android:textSize">14.0dip</item>
+        <item name="android:paddingLeft">2.0dip</item>
+        <item name="android:paddingBottom">4.0dip</item>
+        <item name="android:clickable">false</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_marginTop">12.0dip</item>
+    </style>
+
+    <style name="detail_course_right_text">
+        <item name="android:textSize">14.0dip</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">36.0dip</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
 </resources>

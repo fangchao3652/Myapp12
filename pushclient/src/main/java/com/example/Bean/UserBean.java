@@ -12,7 +12,16 @@ public class UserBean extends BaseBean {
     private String SName;
     private String MemberPwd;
     private String ImageUrl;
-    private List<String> list;
+
+    public List<String> getTopicList() {
+        return TopicList;
+    }
+
+    public void setTopicList(List<String> topicList) {
+        TopicList = topicList;
+    }
+
+    private List<String> TopicList;
     public String getMemberPwd() {
         return MemberPwd;
     }

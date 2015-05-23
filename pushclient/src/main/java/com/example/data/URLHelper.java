@@ -128,6 +128,15 @@ public class URLHelper {
         return params;
     }
 
+
+    public static Map<String, String> getCourseListParams(String account,String week) {
+        params = new TreeMap<String, String>();
+        params.put("MemberId", account);
+        params.put("Week", week);
+        CommonUtils.logWrite("params:getCourseListParams ", params.toString());
+        return params;
+    }
+
     /**
      * 注册
      *

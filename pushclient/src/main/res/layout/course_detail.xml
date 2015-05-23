@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detail_course_rlyt_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/detail_course_info_llyt_body"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16.0dip"
+                android:paddingRight="16.0dip">
+
+                <TextView
+                    style="@style/general_list_tab_blue"
+                 android:background="@drawable/ic_tab_background_blue"
+                    android:text="课堂信息" />
+
+                <LinearLayout style="@style/detail_course_item_layout">
+
+                    <TextView
+                        style="@style/detail_course_left_text"
+                        android:drawableLeft="@drawable/ic_detail_course_name_icon"
+                        android:text="名称" />
+
+                    <TextView
+                        android:id="@+id/course_info_txv_courseName"
+                        style="@style/detail_course_right_text"
+                        android:text="" />
+
+
+                </LinearLayout>
+
+                <LinearLayout style="@style/detail_course_item_layout">
+
+                    <TextView
+                        style="@style/detail_course_left_text"
+                        android:drawableLeft="@drawable/ic_detail_course_classroom_icon"
+                        android:text="教室" />
+
+                    <TextView
+                        android:id="@+id/course_info_txv_classroom"
+                        style="@style/detail_course_right_text"
+                        android:text="" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/detail_course_item_layout">
+
+                    <TextView
+                        style="@style/detail_course_left_text"
+                        android:drawableLeft="@drawable/ic_detail_course_teacher_icon"
+                        android:text="老师" />
+
+                    <TextView
+                        android:id="@+id/course_info_txv_teacherName"
+                        style="@style/detail_course_right_text"
+                        android:text="" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/detail_course_item_layout">
+
+                    <TextView
+                        style="@style/detail_course_left_text"
+                        android:drawableLeft="@drawable/ic_detail_course_section_icon"
+                        android:text="节数" />
+
+                    <TextView
+                        android:id="@+id/course_info_txv_section"
+                        style="@style/detail_course_right_text"
+                        android:text="" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/detail_course_item_layout">
+
+                    <TextView
+                        style="@style/detail_course_left_text"
+                        android:drawableLeft="@drawable/ic_detail_course_week_icon"
+                        android:text="周数" />
+
+                    <TextView
+                        android:id="@+id/course_info_txv_week"
+                        style="@style/detail_course_right_text"
+                        android:text="" />
+
+                   <!-- <ImageButton
+                        android:id="@id/course_info_imgvbtn_attention"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="8.0dip"
+                        android:background="@color/lucency_black"
+                        android:src="@drawable/btn_attention_selector"
+                        android:visibility="gone" />-->
+                </LinearLayout>
+
+
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="25.0dip" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

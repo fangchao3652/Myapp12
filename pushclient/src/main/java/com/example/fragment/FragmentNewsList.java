@@ -35,7 +35,7 @@ import org.json.JSONObject;
 @EFragment(R.layout.fragment_newslist)
 public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, DataHelper.DataListener {
     @FragmentArg
-    int type = 1;
+    int type = 1;//校园公告
     @ViewById(R.id.rv_news_list)
     RecyclerView mRecyclerView;
     @ViewById(R.id.srl_newslist)
@@ -166,7 +166,7 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
                     .jsonToBean(jsonObject, 6);
             if (rb1.getRetCode() == 0) {
                 listData = (NewsListBean) rb1.getRetObj();
-
+               if(listData!=null&&listData.getNewsList()!=null&&listData.getNewsList().size()!=0){
                 // 判断是否需要到底部自动加载
                 mAdapter = new FramgentNewsAdapter(listData, getActivity());
                 if (Integer.valueOf(URLHelper.PAGESIZE) > listData
@@ -179,8 +179,8 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
                 loadedfromcache = true;
                 mAdapter.setOnItemClickListener(myListener);
                 mRecyclerView.setAdapter(mAdapter);
-            }
-            if (listData != null)
+            }}
+            if (listData != null&&listData.getNewsList()!=null)
                 if (listData.getNewsList().size() == 0) {
                     showView(1);
                 } else {
@@ -206,6 +206,7 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
                         .jsonToBean(response, 6);
                 if (rb1.getRetCode() == 0) {
                     listData = (NewsListBean) rb1.getRetObj();
+                    if(listData!=null&&(listData.getNewsList().size()!=0)){
                     DiskDataHelper.getInstance().saveListToCache("fragment_newslist", response);
                     // 判断是否需要到底部自动加载
                     mAdapter = new FramgentNewsAdapter(listData, getActivity());
@@ -218,7 +219,7 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
                     }
                     mAdapter.setOnItemClickListener(myListener);
                     mRecyclerView.setAdapter(mAdapter);
-                }
+                }}
                 if (listData != null)
                     if (listData.getNewsList().size() == 0) {
                         showView(1);

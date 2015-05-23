@@ -145,6 +145,7 @@ private boolean  loadedfromcachce=false;
                     DiskDataHelper.getInstance().saveListToCache("fragment_fresh", response);
 
                     listdata = (FreshNewsListBean) rb1.getRetObj();
+                    if(listdata!=null&&(listdata.getPosts().size()!=0)){
                     mAdapter = new FragmentFreshAdapter(listdata.getPosts(), imageLoader, options, getActivity());
                     if (listdata.getCount() > listdata
                             .getPosts().size()) {
@@ -154,7 +155,7 @@ private boolean  loadedfromcachce=false;
                         mAdapter.setCanLoadMore(true);
                     }
                     mRecyclerView.setAdapter(mAdapter);
-                } else {
+                }} else {
                     showView(2);
 
                     CustomToast.showToast(rb1.getRetMessage(), getActivity());

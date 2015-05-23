@@ -7,18 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.Bean.BannerListBean;
-import com.example.Bean.BaseBean;
 import com.example.Bean.NewsListBean;
-import com.example.Bean.ResultListBean;
 import com.example.Bean.ResultSingleBean;
 import com.example.R;
 import com.example.activity.NewsDetailsActivity_;
 import com.example.adapter.BannerAdapter;
-import com.example.adapter.FramgentNewsAdapter;
 import com.example.adapter.FramgentRecommandAdapter;
 import com.example.common.CommonUtils;
 import com.example.common.CustomToast;
@@ -27,11 +23,9 @@ import com.example.data.DiskDataHelper;
 import com.example.data.PostDataHelper;
 import com.example.data.URLHelper;
 import com.example.data.VolleyResponseHelper;
-import com.example.view.CustomScrollView;
 import com.example.view.FcScrollView;
 import com.example.view.OnItemClickListener;
 import com.example.view.RecyclerOnScrollListener;
-import com.example.view.ShowMaxImageView;
 import com.example.view.viewpager_fc.CycleIndicator;
 import com.example.view.viewpager_fc.CycleViewPager;
 import com.nineoldandroids.view.ViewHelper;
@@ -43,15 +37,13 @@ import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 import org.json.JSONObject;
 
-import java.util.List;
-
 /**
  * Created by fc on 2015/4/27.
  */
 @EFragment(R.layout.fragment_recommend)
 public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, DataHelper.DataListener {
     @FragmentArg
-    int type = 1;
+    int type = 3;
     @ViewById(R.id.main_scroll)
     FcScrollView main_scroll;
 
@@ -59,8 +51,8 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     RecyclerView mRecyclerView;
     @ViewById(R.id.srl_newslist)
     SwipeRefreshLayout mRefreshLayout;
-@ViewById(R.id.banner_rl)
-  RelativeLayout  banner_rl;
+    @ViewById(R.id.banner_rl)
+    RelativeLayout banner_rl;
 
     @ViewById(R.id.view_loading)
     RelativeLayout view_loading;//加载视图
@@ -100,8 +92,8 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     void init() {
         initUI();
         showView(0);
-       // initByLocalData();//缓存数据
-        initData(0);//焦点图
+        // initByLocalData();//缓存数据
+        initBannerData(0);//焦点图
         initData(1);
     }
 
@@ -111,11 +103,12 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
         switch (v.getId()) {
             case R.id.view_loading_error:
                 PageIndex = 1;
-               showView(0);
+                showView(0);
                 initData(1);
                 break;
         }
     }
+
     /**
      * 切换视图
      *
@@ -146,6 +139,16 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
                 break;
         }
     }
+
+    private void initBannerData(int tag) {
+        mRefreshLayout.setRefreshing(true);
+        // 搜索数据
+        DataHelper piclist = new PostDataHelper(URLHelper.getURL(
+                URLHelper.MOUDLE_Newsinfo, URLHelper.M_GetNewsTitle),
+                URLHelper.getNewsListParams(PageIndex, 6), this, tag);
+        piclist.execute();
+    }
+
     private void initData(int tag) {
         mRefreshLayout.setRefreshing(true);
         // 搜索数据
@@ -170,7 +173,7 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
             @Override
             public void onLoadMore() {
                 if (mAdapter != null && mAdapter.isCanLoadMore()) {
-                    loadedfromcache=false;
+                    loadedfromcache = false;
                     PageIndex++;
                     initData(2);
                 }
@@ -197,7 +200,7 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void onResume() {
         super.onResume();
-        if(bannerAdapter != null){
+        if (bannerAdapter != null) {
             banner_pager.startAutoScroll();
         }
     }
@@ -214,7 +217,6 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
         JSONObject jsonObject_banner = DiskDataHelper.getInstance().getListFromCache("recommend_banner");
 
 
-
         JSONObject jsonObject = DiskDataHelper.getInstance().getListFromCache("fragment_newslist");
         if (jsonObject != null) {
             // banner数据成功回调
@@ -222,19 +224,20 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
                     .jsonToBean(jsonObject, 6);
             if (rb1.getRetCode() == 0) {
                 listData = (NewsListBean) rb1.getRetObj();
-
-                // 判断是否需要到底部自动加载
-                mAdapter = new FramgentRecommandAdapter(listData, getActivity());
-                if (Integer.valueOf(URLHelper.PAGESIZE) > listData
-                        .getNewsList().size()) {
-                    mAdapter.setCanLoadMore(false);
-                    mAdapter.setFooterShow(true);
-                } else {
-                    mAdapter.setCanLoadMore(true);
+                if (listData != null) {
+                    // 判断是否需要到底部自动加载
+                    mAdapter = new FramgentRecommandAdapter(listData, getActivity());
+                    if (Integer.valueOf(URLHelper.PAGESIZE) > listData
+                            .getNewsList().size()) {
+                        mAdapter.setCanLoadMore(false);
+                        mAdapter.setFooterShow(true);
+                    } else {
+                        mAdapter.setCanLoadMore(true);
+                    }
+                    loadedfromcache = true;
+                    mAdapter.setOnItemClickListener(myListener);
+                    mRecyclerView.setAdapter(mAdapter);
                 }
-                loadedfromcache = true;
-                mAdapter.setOnItemClickListener(myListener);
-                mRecyclerView.setAdapter(mAdapter);
             }
             if (listData != null)
                 if (listData.getNewsList().size() == 0) {
@@ -254,8 +257,8 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void sucess(JSONObject response, int code) {
         mRefreshLayout.setRefreshing(false);
-        if(banner_pager!=null)
-        banner_pager.startAutoScroll();
+        if (banner_pager != null)
+            banner_pager.startAutoScroll();
         switch (code) {
             case 0:
                 // banner数据成功回调
@@ -265,12 +268,13 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
 
                     DiskDataHelper.getInstance().saveListToCache("recommend_banner", response);
                     bannerData = (BannerListBean) rb10.getRetObj();
+                    if(bannerData!=null&&bannerData.getNewsList().size()!=0){
                     bannerAdapter = new BannerAdapter(bannerData.getNewsList(),
                             getFragmentManager());
                     banner_pager.setAdapter(bannerAdapter);
                     banner_pager.startAutoScroll();
                     guidance_indicator.setViewPager(banner_pager);
-                }
+                }}
                 break;
 
 
@@ -281,6 +285,7 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
                         .jsonToBean(response, 6);
                 if (rb1.getRetCode() == 0) {
                     listData = (NewsListBean) rb1.getRetObj();
+                    if(listData!=null&&(listData.getNewsList().size()!=0)){
                     DiskDataHelper.getInstance().saveListToCache("fragment_newslist", response);
                     // 判断是否需要到底部自动加载
                     mAdapter = new FramgentRecommandAdapter(listData, getActivity());
@@ -295,7 +300,7 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
                     mRecyclerView.setAdapter(mAdapter);
                     refreshRVLayout(listData.getNewsList().size());
 
-                }
+                }}
                 if (listData != null)
                     if (listData.getNewsList().size() == 0) {
                         showView(1);
@@ -341,8 +346,8 @@ public class FragmentRecommend extends BaseFragment implements SwipeRefreshLayou
 
     private void refreshRVLayout(int num) {
         ViewGroup.LayoutParams mParams = mRecyclerView.getLayoutParams();
-        mParams.height =  CommonUtils.dipToPixels(280)
-        * num + CommonUtils.dipToPixels(80);
+        mParams.height = CommonUtils.dipToPixels(280)
+                * num + CommonUtils.dipToPixels(80);
 
         mRecyclerView.setLayoutParams(mParams);
     }

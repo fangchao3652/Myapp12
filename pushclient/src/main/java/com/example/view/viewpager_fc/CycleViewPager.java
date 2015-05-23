@@ -45,6 +45,7 @@ public class CycleViewPager extends ViewPager {
     public void setAdapter(PagerAdapter arg0) {
         super.setAdapter(arg0);
         setCurrentItem(1);
+        startAutoScroll();
     }
 
     @Override
@@ -115,7 +116,13 @@ public class CycleViewPager extends ViewPager {
 
             switch (msg.what) {
                 case SCROLL_WHAT:
-                    setCurrentItem(getCurrentItem() + 1, true);
+                    if (getAdapter().getCount() > 1) {
+                        if(getCurrentItem() == getAdapter().getCount()-1){
+                            setCurrentItem(1, true);
+                        }else {
+                            setCurrentItem(getCurrentItem() + 1, true);
+                        }
+                    }
                     sendScrollMessage(interval);
                     break;
             }

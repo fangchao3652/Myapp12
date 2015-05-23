@@ -8,10 +8,12 @@ import android.widget.ImageView;
 
 import com.example.Bean.BannerBean;
 import com.example.R;
+import com.example.activity.NewsDetailsActivity_;
 import com.example.common.SharedPreferencesUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
@@ -48,37 +50,15 @@ public class FragmentBanner extends BaseFragment {
             } else {
                 imgView.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
             }
+            if(bean.getImageUrl()!=null)
             imgView.setImageURI(Uri.parse(bean.getImageUrl()));
         }
     }
 
-   /* @Click({R.id.banner_item_img, R.id.banner_item_img_no})
+    @Click({R.id.banner_item_img, R.id.banner_item_img_no})
     void click(View v) {
-        // 类型 Product：商品页 List：商品列表页 Search：搜索页 Activity：活动页
-        if (getType("Product")) {
-            // 跳转商品详情页面
-            cc.android.supu.activity.GoodsDetailActivity_.intent(this)
-                    .goodsSN(bean.getLinkData()).start();
-        } else if (getType("List")) {
-            String[] s = bean.getLinkData().split("-");
-            // 跳转商品列表页面
-            GoodsListActivity_.intent(this).mbrandId(s.length >= 2 ? s[1] : "").
-                    mcategoryId(s.length >= 1 ? s[0] : "").start();
-        } else if (getType("Search")) {
-            // 跳转商品列表页面
-            GoodsListActivity_.intent(this).msearchKey(bean.getLinkData()).start();
-        } else if (getType("Activity")) {
-            // 跳转活动详情页面
-            cc.android.supu.activity.ActActivity_.intent(this)
-                    .ActivityId(bean.getLinkData()).start();
-        } else if (getType("Falsh")) {
-            String[] s = bean.getLinkData().split("-");
-            BoutiqueSaleBean boutiqueSaleBean = new BoutiqueSaleBean();
-            boutiqueSaleBean.setFlashSaleName(s.length >= 2 ? s[0] : "");
-            boutiqueSaleBean.setFlashSaleId(s.length >= 2 ? s[1] : "");
-            cc.android.supu.activity.BoutiqueSalesActivity_.intent(this).boutiqueSaleBean(boutiqueSaleBean).start();
-        }
-    }*/
+        NewsDetailsActivity_.intent(getActivity()).id(String.valueOf(bean.getId())).start();
+    }
 
 
 
