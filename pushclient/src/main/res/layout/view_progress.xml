@@ -3,7 +3,7 @@
                xmlns:android="http://schemas.android.com/apk/res/android"
                xmlns:wheel="http://schemas.android.com/apk/res-auto"
                android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
+               android:layout_height="match_parent"
                android:layout_gravity="center"
 
                android:gravity="center"
@@ -18,7 +18,7 @@
             android:layout_gravity="center"
             wheel:barColor="@color/green"
             wheel:barWidth="2dp"
-            wheel:circleRadius="24dp"
+            wheel:circleRadius="36dp"
             wheel:progressIndeterminate="true" />
 
 </LinearLayout>

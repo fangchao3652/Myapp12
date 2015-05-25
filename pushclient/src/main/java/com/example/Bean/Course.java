@@ -7,7 +7,16 @@ public class Course extends BaseBean {
     private int semester;//学期
     private String courseName;//课程名
     private String courseTime;//课程时间，冗余字段
-    private String classsroom;//教室
+    private String classroom;//教室
+
+    public String getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(String classroom) {
+        this.classroom = classroom;
+    }
+
     private String teacher;//老师
     private int dayOfWeek;//星期几
     private int startSection;//第几节课开始
@@ -112,13 +121,7 @@ public class Course extends BaseBean {
         this.courseTime = courseTime;
     }
 
-    public String getClasssroom() {
-        return classsroom;
-    }
 
-    public void setClasssroom(String classsroom) {
-        this.classsroom = classsroom;
-    }
 
     public String getTeacher() {
         return teacher;
@@ -133,7 +136,7 @@ public class Course extends BaseBean {
         return "Course [id=" + id + ", startYear=" + startYear + ", endYear="
                 + endYear + ", semester=" + semester + ", courseName="
                 + courseName + ", courseTime=" + courseTime + ", classsroom="
-                + classsroom + ", teacher=" + teacher + ", dayOfWeek="
+                + classroom + ", teacher=" + teacher + ", dayOfWeek="
                 + dayOfWeek + ", startSection=" + startSection
                 + ", endSection=" + endSection + ", startWeek=" + startWeek
                 + ", endWeek=" + endWeek + ", everyWeek=" + everyWeek + "]";

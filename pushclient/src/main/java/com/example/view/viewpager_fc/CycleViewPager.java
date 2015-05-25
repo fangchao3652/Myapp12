@@ -116,6 +116,7 @@ public class CycleViewPager extends ViewPager {
 
             switch (msg.what) {
                 case SCROLL_WHAT:
+                    if(getAdapter()!=null)
                     if (getAdapter().getCount() > 1) {
                         if(getCurrentItem() == getAdapter().getCount()-1){
                             setCurrentItem(1, true);

@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/greendaogenerater/greendaogenerater.iml" filepath="$PROJECT_DIR$/greendaogenerater/greendaogenerater.iml" />
       <module fileurl="file://$PROJECT_DIR$/myapplication2_flodinglayout/myapplication2_flodinglayout.iml" filepath="$PROJECT_DIR$/myapplication2_flodinglayout/myapplication2_flodinglayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/pushclient/pushclient.iml" filepath="$PROJECT_DIR$/pushclient/pushclient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wheeldemo/wheeldemo.iml" filepath="$PROJECT_DIR$/wheeldemo/wheeldemo.iml" />
     </modules>
   </component>
 </project>

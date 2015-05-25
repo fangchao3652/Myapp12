@@ -36,14 +36,14 @@ public class CourseDetailsActivity extends BaseActionBarActivity {
 
         title=courseBean.getCourseName();
         course_info_txv_courseName.setText(courseBean.getCourseName());
-        course_info_txv_classroom.setText(courseBean.getClasssroom());
+        course_info_txv_classroom.setText(courseBean.getClassroom());
         course_info_txv_teacherName.setText(courseBean.getTeacher());
         int week = courseBean.getDayOfWeek();
 
         String[] weekStrayyar = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
 
 
-        course_info_txv_section.setText(weekStrayyar[week] + " " + courseBean.getStartSection() + "-" + courseBean.getEndSection());
+        course_info_txv_section.setText(weekStrayyar[week-1] + " " + courseBean.getStartSection() + "-" + courseBean.getEndSection()+"节");
         course_info_txv_week.setText(courseBean.getStartWeek() + "-" + courseBean.getEndWeek() + "周");
     }
 }

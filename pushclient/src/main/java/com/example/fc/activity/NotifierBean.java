@@ -8,9 +8,7 @@ package com.example.fc.activity;
  * Created by zxh on 2015/3/25.
  */
 public class NotifierBean  {
-	/*{"title": "题目房超", 
-      "content": "aaaaaaaaaaaaaaaaaaa", 
-      "type": 1}*/
+ //   {"title": "这是标题","content":"这是,内容","type":3,"newId":3}
 
     /**
      * 标题
@@ -21,7 +19,7 @@ public class NotifierBean  {
      */
     private String content;
     /**
-     * 类型0商品列表1特卖列表2商品详情 3.新闻
+     * 类型0商品列表1显示content  3.新闻
      */
     private int type;
     private  String newId;

@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.Bean.Course;
@@ -18,6 +17,7 @@ import com.example.Bean.CourseListBean;
 import com.example.Bean.ResultSingleBean;
 import com.example.R;
 import com.example.common.CustomToast;
+import com.example.common.SharedPreferencesUtils;
 import com.example.data.DataHelper;
 import com.example.data.PostDataHelper;
 import com.example.data.URLHelper;
@@ -32,6 +32,9 @@ public class CourseActivity extends BaseActionBarActivity implements DataHelper.
     CourseListBean listdata;
     // private CourseService courseService;
     LinearLayout ll_view_setweek;
+
+
+    MaterialDialog dialog;
     TextView tv_setweek;
     //课程页面的button引用，6行7列
     private int[][] lessons = {
@@ -50,9 +53,10 @@ public class CourseActivity extends BaseActionBarActivity implements DataHelper.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course);
 
+        dialog = new MaterialDialog.Builder(this).customView(R.layout.view_progress, true).build();
 
         //showView(0);
-        initData(1, "1108010216", "5");
+        initData(1, SharedPreferencesUtils.getInstance().getUserMessage().getMemberId(), "5");
 
     }
 
@@ -78,20 +82,24 @@ public class CourseActivity extends BaseActionBarActivity implements DataHelper.
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                Toast.makeText(getApplicationContext(), which + ": " + text, Toast.LENGTH_SHORT).show();
+                                //  Toast.makeText(getApplicationContext(), which + ": " + text, Toast.LENGTH_SHORT).show();
                                 tv_setweek.setText("第" + text + "周");
-                                initData(1, "1108010216", String.valueOf(text));
+                                if(SharedPreferencesUtils.getInstance().isLogin())
+                                initData(1, SharedPreferencesUtils.getInstance().getUserMessage().getMemberId(), String.valueOf(text));
                             }
                         })
                         .negativeText("取消")
                         .show();
+                //  Fc_DialogWithWheel.showCustomView(CourseActivity.this);
             }
         });
     }
 
     private void initData(int tag, String memberId, String week) {
-        // 搜索数据
-        DataHelper piclist = new PostDataHelper("http://192.168.3.12:8080/MyService/servlet/courseServlet",
+        // 数据
+        dialog.show();
+        //http://192.168.3.12:8080/MyService/servlet/courseServlet
+        DataHelper piclist = new PostDataHelper("http://115.28.131.31:81/api/student/GetCourseList",
                 URLHelper.getCourseListParams(memberId, week), this, tag);
         piclist.execute();
     }
@@ -108,13 +116,20 @@ public class CourseActivity extends BaseActionBarActivity implements DataHelper.
         //循环遍历
         for (int i = 0; i < listdata.getCourseList().size(); i++) {
             course = listdata.getCourseList().get(i);//拿到当前课程
-            int dayOfWeek = course.getDayOfWeek() - 1;//转换为lessons数组对应的下标
+            int dayOfWeek = (course.getDayOfWeek() > 7 ? 7 : course.getDayOfWeek()) - 1;//转换为lessons数组对应的下标
             int section = course.getStartSection() / 2;//转换为lessons数组对应的下标
-            Button lesson = (Button) findViewById(lessons[section][dayOfWeek]);//获得该节课的button
-            lesson.setTag(course);
-            int bgRes = bg[(int) (Math.random() * (bg.length - 1))];//随机获取背景色
-            lesson.setBackgroundResource(bgRes);//设置背景
-            lesson.setText(course.getCourseName() + "@" + course.getClasssroom());//设置文本为课程名+“@”+教室
+            Button lesson = null;
+            try {
+                lesson = (Button) findViewById(lessons[section][dayOfWeek]);//获得该节课的button
+                lesson.setTag(course);
+                int bgRes = bg[(int) (Math.random() * (bg.length - 1))];//随机获取背景色
+                lesson.setBackgroundResource(bgRes);//设置背景
+                lesson.setText(course.getCourseName() + "@" + course.getClassroom());//设置文本为课程名+“@”+教室
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
         }
     }
 
@@ -123,22 +138,34 @@ public class CourseActivity extends BaseActionBarActivity implements DataHelper.
 // 下拉刷新数据返回处理
         ResultSingleBean rb1 = (ResultSingleBean) VolleyResponseHelper
                 .jsonToBean(response, 31);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 7; j++) {
+                Button b = (Button) findViewById(lessons[i][j]);
+                b.setTag(null);
+                b.setBackgroundResource(0);//设置背景
+                b.setText("");
+            }
+        }
         if (rb1.getRetCode() == 0) {
+            dialog.dismiss();
             listdata = (CourseListBean) rb1.getRetObj();
         }
-        if (listdata != null)
+        if (listdata != null && listdata.getCourseList() != null) {
             if (listdata.getCourseList().size() == 0) {
                 // showView(1);
             } else {
                 //   showView(3);
                 initViewwithdata();
             }
-
+        } else {
+            CustomToast.showToast("内容为空", CourseActivity.this);
+        }
     }
 
     @Override
     public void err(String error, int code) {
         //  showView(2);
+        dialog.dismiss();
         CustomToast.showToast(error, this);
     }
 

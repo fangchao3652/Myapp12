@@ -158,7 +158,8 @@ public class LoginActivity extends BaseActionBarActivity implements DataHelper.D
                     for (int i = 0; i < topiclist.size(); i++) {
                         MqttService.AddTopic(topiclist.get(i));
                     }
-                    MqttService.actionStop(this);
+                    MqttService.actionStart(LoginActivity.this);
+                  //  MqttService.actionStop(this);
                     //1s后重新启动
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -167,7 +168,7 @@ public class LoginActivity extends BaseActionBarActivity implements DataHelper.D
                             for (int i = 0; i < MqttService.getTopicFilters().length; i++) {
                                 Log.e("cq", MqttService.getTopicFilters()[i]);
                             }
-                            MqttService.actionStart(LoginActivity.this);
+
                         }
                     }, 1000);
                     finish();

@@ -17,8 +17,8 @@ import com.google.gson.JsonSyntaxException;
 
 
 /**
- * @author  fangchao
- * 消息通知展示
+ * @author fangchao
+ *         消息通知展示
  */
 
 public class MqttNotifier {
@@ -94,7 +94,7 @@ public class MqttNotifier {
         switch (mBean.getType()) {
 
             case 0:
-                //商品列表
+                //
               /*  String title = "";
                 if (!StringUtils.isBlank(mBean.getSearchText())) {
                     title = mBean.getSearchText();
@@ -110,12 +110,12 @@ public class MqttNotifier {
                 //  .mcategoryId(mBean.getCategoryId()).mbrandId(mBean.getBrandId()).title(title).get();
                 break;
             case 1:
+//显示通知内容
+               /* mIntent = new Intent();
 
-                mIntent = new Intent();
+                mIntent.setClass(context, com.example.fc.activity.firstActivity.class);*/
 
-                mIntent.setClass(context, com.example.fc.activity.firstActivity.class);
-
-
+                mIntent =  firstActivity_.intent(context).title(mBean.getTitle()).content(mBean.getContent()).get();
                 break;
             case 2:
                 //商品详情
@@ -123,7 +123,7 @@ public class MqttNotifier {
                 break;
             //   mIntent = GoodsDetailActivity_.intent(context).goodsSN(mBean.getGoodsId()).get();
             case 3:
-                mIntent= NewsDetailsActivity_.intent(context).id(mBean.getNewId()).get();
+                mIntent = NewsDetailsActivity_.intent(context).id(mBean.getNewId()).get();
             default:
                 //  mIntent = HomeActivity_.intent(context).get();
                 break;

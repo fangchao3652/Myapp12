@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.supumall.wheeldemo" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".WheelDemo"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".TimePickerActivity" android:label="Time picker">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="antistatic.spinnerwheel.WHEEL_SAMPLE"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".TimePickerCustomViewsActivity" android:label="Time picker with custom views">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="antistatic.spinnerwheel.WHEEL_SAMPLE"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".ProgrammaticSwitchingActivity" android:label="Programmatic switching (shuffle)">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="antistatic.spinnerwheel.WHEEL_SAMPLE"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".CitiesActivity" android:label="Repopulating data">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="antistatic.spinnerwheel.WHEEL_SAMPLE"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

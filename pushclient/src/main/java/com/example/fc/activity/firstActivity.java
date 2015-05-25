@@ -1,19 +1,28 @@
 package com.example.fc.activity;
 
 
-import android.app.Activity;
-import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.R;
+import com.example.activity.BaseActionBarActivity;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
 
+@EActivity(R.layout.first)
+public class firstActivity extends BaseActionBarActivity {
+    @Extra
+    String title = "";
+    @Extra
+    String content = "";
+    @ViewById(R.id.Tv_content)
+    TextView Tv_content;
 
-public class firstActivity extends Activity{
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.first);
+    @AfterViews
+    void init() {
+        super.title = this.title;
+        Tv_content.setText(content);
     }
 }

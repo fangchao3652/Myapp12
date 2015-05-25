@@ -87,8 +87,10 @@ public class FragmentRight extends Fragment implements DataHelper.DataListener {
     private void initPerson() {
         if (SharedPreferencesUtils.getInstance().isLogin()) {
             // 登陆
+
             UserBean bean = SharedPreferencesUtils.getInstance()
                     .getUserMessage();
+            btn_course.setVisibility(View.VISIBLE);
             personNoV.setVisibility(View.GONE);
             personYesV.setVisibility(View.VISIBLE);
             // 赋值
@@ -167,6 +169,7 @@ public class FragmentRight extends Fragment implements DataHelper.DataListener {
             // 未登录
             personNoV.setVisibility(View.VISIBLE);
             personYesV.setVisibility(View.GONE);
+            btn_course.setVisibility(View.GONE);
         }
     }
 
@@ -241,7 +244,7 @@ public class FragmentRight extends Fragment implements DataHelper.DataListener {
      */
     private void initData() {
         if (SharedPreferencesUtils.getInstance().isLogin()) {
-            mDataHelper =new PostDataHelper(URLHelper.getURL(
+            mDataHelper = new PostDataHelper(URLHelper.getURL(
                     URLHelper.MOUDLE_Student, URLHelper.M_LOGIN),
                     URLHelper.getLoginParams(SharedPreferencesUtils.getInstance().getUserMessage().getMemberId().trim(), SharedPreferencesUtils.getInstance().getUserMessage().getMemberPwd(), "a123213121313213131"), this, 0);
             mDataHelper.execute();

@@ -172,7 +172,7 @@ public class MqttService extends Service implements MqttCallback {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("fc", "oncreate");
+        Log.e("fcmqtt", "oncreate");
         //初始化设备id，长度不能超过23
         mDeviceId = String.format(DEVICE_ID_FORMAT,
                 Secure.getString(getContentResolver(), Secure.ANDROID_ID));
@@ -208,7 +208,6 @@ public class MqttService extends Service implements MqttCallback {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-
         String action = intent.getAction();
         Log.e(DEBUG_TAG, "推送服务接收到一个请求 " + action);
 
@@ -248,6 +247,7 @@ public class MqttService extends Service implements MqttCallback {
             Log.e(DEBUG_TAG, "尝试启动推送服务，但推送服务已经启动");
             Log.e(DEBUG_TAG, "《《《《《《      reconnectIfNecessary》》》》》》》》》》");
             reconnectIfNecessary();
+
             return;
         }
 
@@ -312,6 +312,7 @@ public class MqttService extends Service implements MqttCallback {
                             mClient.connect();
                             //fc
                             topicFilters = castSet2Array(SharedPreferencesUtils.getInstance().getUserMessage().getTopicList());
+                            if(topicFilters!=null){
                             mClient.subscribe(topicFilters, new int[topicFilters.length]);
 
                             mClient.setCallback(MqttService.this);
@@ -321,12 +322,14 @@ public class MqttService extends Service implements MqttCallback {
                             Log.e(DEBUG_TAG, "成功连接推送服务器并启动心跳包闹钟");
 
                             startKeepAlives();
-                        }
+                        }}
                     } catch (MqttException e) {
                         e.printStackTrace();
                     }
                 }
             });
+        else
+            startKeepAlives();
     }
 
     private String[] castSet2Array(List<String> topicset) {
@@ -385,7 +388,13 @@ public class MqttService extends Service implements MqttCallback {
                 Log.e("exception", "aaaaaaaaaaa");
             }
         }
-    }
+        else {
+            if (isNetworkAvailable()) {
+                connect();
+            } else {
+                startKeepAlives();
+            }
+    }}
 
     /**
      * 重新连接如果他是必须的
@@ -396,7 +405,7 @@ public class MqttService extends Service implements MqttCallback {
             connect();
         } else {
             Log.e(DEBUG_TAG, "重新连接没有启动，mStarted:" + String.valueOf(mStarted) + " mClient:" + mClient);
-            connect();
+            //connect();
         }
     }
 
@@ -454,6 +463,7 @@ public class MqttService extends Service implements MqttCallback {
         MqttMessage message = new MqttMessage(MQTT_KEEP_ALIVE_MESSAGE);
         message.setQos(MQTT_KEEP_ALIVE_QOS);
 
+        message.setRetained(true);
 
         return mKeepAliveTopic.publish(message);
     }
@@ -509,7 +519,11 @@ public class MqttService extends Service implements MqttCallback {
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
         Log.e(DEBUG_TAG, "推送回调函数deliveryComplete方法执行");
     }
-
+    @Override
+    public void onDestroy() {
+        stopForeground(true);
+        super.onDestroy();
+    }
     /**
      * MqttConnectivityException Exception class
      */

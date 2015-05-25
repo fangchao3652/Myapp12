@@ -2,20 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
+    android:background="@color/white"
     android:layout_height="fill_parent"
     >
     
-    <ImageView android:id="@+id/logo" 
-          android:src="@drawable/icon_collect_press"
-          android:layout_centerHorizontal="true" 
-          android:layout_width="wrap_content" 
-          android:layout_height="wrap_content"       
-          android:layout_gravity="center_horizontal"
-          android:layout_marginTop="5dip"    
-     /> 
+
      
 
-    <TextView android:id="@+id/aboutlabel_text" 
+    <TextView android:id="@+id/Tv_content"
  
 	     android:layout_width="wrap_content" 
 	     android:layout_height="wrap_content" 

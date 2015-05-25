@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example" >
+    package="com.example">
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- volleypost 提交时读取手机状态权限 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- zxh检查wife状态 -->
@@ -29,8 +26,10 @@
      To retrieve OAuth 2.0 tokens or invalidate tokens to disconnect a user. This disconnect
      option is required to comply with the Google+ Sign-In developer policies
     -->
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" /> <!-- To retrieve the account name (email) as part of sign-in: -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <!-- To retrieve the account name (email) as part of sign-in: -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
@@ -39,10 +38,10 @@
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme.Normal" >
+        android:theme="@style/AppTheme.Normal">
         <activity
             android:name=".activity.WelcomeActivity_"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,7 +52,7 @@
             android:name=".fc.activity.SecondActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".fc.activity.firstActivity"
+            android:name=".fc.activity.firstActivity_"
             android:launchMode="singleTask" />
         <activity
             android:name=".activity.HomeActivity_"
@@ -81,7 +80,8 @@
             android:name=".activity.WebActivity_"
             android:configChanges="keyboardHidden|orientation"
             android:label="详情"
-            android:screenOrientation="portrait" /> <activity
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.CourseActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="课程表"
@@ -98,7 +98,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-        <receiver android:name=".receiver.BootBroadcastReceiver" >
+        <receiver android:name=".receiver.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
@@ -112,8 +112,6 @@
             android:name=".fc.activity.MqttService"
             android:exported="false"
             android:label=" Push Notifications Service" />
-
-
 
 
     </application>
