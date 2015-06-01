@@ -37,7 +37,7 @@ import java.util.List;
 
 /**
  * 登录activity
- * Created by zhangxinhao on 2015/2/3.
+ * Created by fc on 2015/2/3.
  */
 @EActivity(R.layout.activity_login)
 public class LoginActivity extends BaseActionBarActivity implements DataHelper.DataListener {

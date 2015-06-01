@@ -7,14 +7,7 @@ package com.example.common;
  */
 public class Constants {
 
-    /**
-     * 银联spid
-     */
-    public static final String SPID = "0281";
-    /**
-     * 系统运营方ID
-     */
-    public static final String SYSPROVIDER = "11564520";
+
 
     /**
      * log的开关上线时设置为false
@@ -34,15 +27,7 @@ public class Constants {
      */
     public static final String LOCALIPADDRESS = "1.1.1.1";
 
-    /**
-     * 用户协议url
-     */
-    public static final String AGREEMENT_URL = "http://www.supuy.com/agreement.html";
 
-    /**
-     * 购买须知
-     */
-    public static final String NEEDKNOW_URL = "http://buy.api.supuy.com/html/Inform.html";
     /**
      * sd卡的缓存路径
      */

@@ -2,7 +2,6 @@ package com.example.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -18,18 +17,15 @@ import android.widget.Toast;
 import com.android.viewpager.PagerSlidingTab;
 import com.example.R;
 import com.example.adapter.FragmentPageAdapter;
-import com.example.application.MyApplication;
 import com.example.common.CommonUtils;
 import com.example.common.CustomToast;
 import com.example.common.Exit;
 import com.example.common.SharedPreferencesUtils;
 import com.example.common.StringUtils;
 import com.example.data.DataHelper;
-import com.example.fragment.FragmentFresh;
 import com.example.fragment.FragmentFresh_;
 import com.example.fragment.FragmentNewsList_;
 import com.example.fragment.FragmentRecommend_;
-import com.example.fragment.FragmentRight_;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import org.androidannotations.annotations.AfterViews;
@@ -54,9 +50,7 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
     ActionBar actionBar;
     Exit exit = new Exit();
     private ActionBarDrawerToggle mActionBarDrawerToggle;
-    /**
-     * 保存当前页面是否为夜间模式
-     */
+
     private boolean flg;
     /**
      * 左滑个人中心
@@ -88,7 +82,7 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
         showBackPress = false;
         showTitle = false;
         SwipeBack = false;
-        actionBar=mActionBar;
+        actionBar = mActionBar;
 
         initSlidingMenu();
         initTabView();
@@ -107,13 +101,16 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
 
         fragments.add(FragmentNewsList_.builder().type(0).build());
         titles.add("科大要闻");
-
-        fragments.add(FragmentFresh_.builder().build());
-        titles.add("新鲜事");
-
+        fragments.add(FragmentNewsList_.builder().type(1).build());
+        titles.add("校园传真");
+        fragments.add(FragmentNewsList_.builder().type(2).build());
+        titles.add("媒体科大");
+        fragments.add(FragmentNewsList_.builder().type(4).build());
+        titles.add("校内通知");
         fragments.add(FragmentNewsList_.builder().type(5).build());
         titles.add("学术动态");
-
+        fragments.add(FragmentFresh_.builder().build());
+        titles.add("新鲜事");
     }
 
     protected void onNewIntent(Intent intent) {
@@ -142,16 +139,10 @@ public class HomeActivity extends BaseActionBarActivity implements DataHelper.Da
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 3) {//保税区
-                    if (!SharedPreferencesUtils.getInstance().getShowAgain_Bao() && !MyApplication.getInstance().isNotshowagain_bao()) {
-                        // AgreementActivity_.intent(HomeActivity.this).type(2).start();
-                    }
-                }
-                if (position == 4) {//海外直邮
+
+                if (position == 6) {
                     menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-                    if (!SharedPreferencesUtils.getInstance().getShowAgain_Sea() && !MyApplication.getInstance().isNotshowagain_sea()) {
-                        //  AgreementActivity_.intent(HomeActivity.this).type(1).start();
-                    }
+
 
                 } else {
                     menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);

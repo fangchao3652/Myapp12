@@ -16,6 +16,7 @@ import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.example.Bean.UserBean;
+import com.example.common.Constants;
 import com.example.common.SharedPreferencesUtils;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -46,9 +47,8 @@ public class MqttService extends Service implements MqttCallback {
     private static final int MQTT_KEEP_ALIVE_QOS = MQTT_QOS_0; //心跳包的发送级别默认最低
     public static final int MQTT_QOS_1 = 1; //消息投放级别 QOS Level 1 (至少一次，有可能重复。 )
     public static final int MQTT_QOS_2 = 2; //消息投放级别 QOS Level 2 (只有一次，确保消息只到达一次（用于比较严格的计费系统）。)
-    private static final String MQTT_BROKER_TEST = "115.28.131.31"; //测试地址@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+    private static final String MQTT_BROKER_TEST = Constants.ISDEBUG? "192.168.3.12":"115.28.131.31"; //测试地址@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
     private static final String MQTT_BROKER = MQTT_BROKER_TEST;
-    private static final String MQTT_BROKER_ONLINE = "mqtt.supumall.com"; //正式地址
     private static final int MQTT_PORT = 1883;                // 服务器推送端口
     private static final int MQTT_KEEP_ALIVE = 1 * 60 * 1000; //心跳包时间，毫秒
     private static final String MQTT_KEEP_ALIVE_TOPIC_FORAMT = "/users/%s/keepalive"; // Topic format for KeepAlives

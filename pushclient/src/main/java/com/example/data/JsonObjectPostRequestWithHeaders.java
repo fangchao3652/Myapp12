@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * 自定义请求头的postRequest
  *
- * @author Zxh
+ * @author fc
  */
 public class JsonObjectPostRequestWithHeaders extends Request<JSONObject> {
     private Map<String, String> mMap;

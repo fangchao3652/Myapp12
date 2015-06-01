@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * post方式请求数据
  *
- * @author Zxh
+ * @author fc
  *
  */
 public class PostDataHelper implements DataHelper {

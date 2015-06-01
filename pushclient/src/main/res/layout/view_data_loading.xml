@@ -30,6 +30,7 @@
             android:layout_marginLeft="@dimen/default_margin"
             android:layout_marginTop="@dimen/default_margin"
             android:textSize="@dimen/text_default"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:text="努力加载中..." />
     </LinearLayout>
@@ -40,7 +41,7 @@
         android:layout_height="match_parent"
         android:paddingTop="150dp"
         android:gravity="center_horizontal"
-        android:visibility="gone"
+
         android:clickable="true"
         android:orientation="vertical">
 

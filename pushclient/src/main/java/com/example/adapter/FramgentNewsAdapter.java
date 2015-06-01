@@ -18,7 +18,9 @@ import com.example.Bean.BaseBean;
 import com.example.Bean.NewBaseBean;
 import com.example.Bean.NewsListBean;
 import com.example.R;
+import com.example.common.CustomToast;
 import com.example.common.SharedPreferencesUtils;
+import com.example.common.StringUtils;
 import com.example.view.OnItemClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -26,7 +28,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.io.File;
 
@@ -90,7 +91,7 @@ public class FramgentNewsAdapter extends FooterAdapter {
             if (SharedPreferencesUtils.getInstance().getImgQuerity() == 3) {
 
             } else
-                imageLoader.displayImage(getItem(position).getImageUrl(), vh.img, options,new ImageLoadingListener() {
+                imageLoader.displayImage(getItem(position).getImageUrl(), vh.img, options, new ImageLoadingListener() {
                     @Override
                     public void onLoadingStarted(String s, View view) {
                         vh.progressBar.setProgress(6);
@@ -113,7 +114,7 @@ public class FramgentNewsAdapter extends FooterAdapter {
                         vh.progressBar.setVisibility(View.GONE);
 
                     }
-                },new ImageLoadingProgressListener() {
+                }, new ImageLoadingProgressListener() {
                     @Override
                     public void onProgressUpdate(String imageUri, View view, int current, int total) {
 
@@ -128,18 +129,24 @@ public class FramgentNewsAdapter extends FooterAdapter {
                 @Override
                 public void onClick(View v) {
                     String url = getItem(position).getImageUrl();
-                    File cachefil = ImageLoader.getInstance().getDiskCache().get(url);
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    if (cachefil.exists() && cachefil != null) {
-                        intent.setType("image/*");
-                        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(cachefil));
+                    if (!StringUtils.isBlank(url)) {
+                        File cachefil = ImageLoader.getInstance().getDiskCache().get(url);
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        if (cachefil.exists() && cachefil != null) {
+                            intent.setType("image/*");
+                            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(cachefil));
+                        }
+                        intent.putExtra(Intent.EXTRA_TEXT, "分享自" + mContext.getResources().getString(R
+                                .string.app_name) + getItem(position).getTitle());
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(Intent.createChooser(intent, mContext.getResources().getString(R
+                                .string.app_name)));
+                    } else {
+
+                    CustomToast.showToast("此条目暂不支持此功能", mContext);
                     }
-                    intent.putExtra(Intent.EXTRA_TEXT, "分享自" + mContext.getResources().getString(R
-                            .string.app_name) + getItem(position).getTitle());
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mContext.startActivity(Intent.createChooser(intent, mContext.getResources().getString(R
-                            .string.app_name)));
                 }
+
             });
 
 
@@ -148,7 +155,7 @@ public class FramgentNewsAdapter extends FooterAdapter {
             vh.Tv_title.setText(getItem(position).getTitle());//fc
             vh.Tv_source.setText(getItem(position).getSource());//fc
             vh.Tv_time.setText(getItem(position).getPublishTime());//fc
-            if (getItem(position).getImageUrl() != null&&SharedPreferencesUtils.getInstance().getImgQuerity()!=3)
+            if (getItem(position).getImageUrl() != null && SharedPreferencesUtils.getInstance().getImgQuerity() != 3)
                 vh.item_img.setImageURI(Uri.parse(getItem(position).getImageUrl()));
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -218,9 +225,10 @@ public class FramgentNewsAdapter extends FooterAdapter {
         private ImageView img;
         private CardView card;
         private ProgressBar progressBar;
+
         public ContentViewHolderLarge(View contentView) {
             super(contentView);
-            progressBar= (ProgressBar) contentView.findViewById(R.id.progress);
+            progressBar = (ProgressBar) contentView.findViewById(R.id.progress);
             tv_share = (TextView) contentView.findViewById(R.id.tv_share);
             card = (CardView) contentView.findViewById(R.id.card);
             tv_title = (TextView) contentView.findViewById(R.id.tv_title);

@@ -71,7 +71,7 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
     void init() {
         initUI();
         showView(0);
-       initByLocalData();
+        initByLocalData();
         initData(1);
     }
 
@@ -111,7 +111,7 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
             @Override
             public void onLoadMore() {
                 if (mAdapter != null && mAdapter.isCanLoadMore()) {
-                    loadedfromcache=false;
+                    loadedfromcache = false;
                     PageIndex++;
                     initData(2);
                 }
@@ -159,28 +159,33 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
 
     private void initByLocalData() {
         mRefreshLayout.setRefreshing(true);
-        JSONObject jsonObject = DiskDataHelper.getInstance().getListFromCache("fragment_newslist");
+        JSONObject jsonObject = DiskDataHelper.getInstance().getListFromCache("fragment_newslist_" + type);
         if (jsonObject != null) {
             // banner数据成功回调
             ResultSingleBean rb1 = (ResultSingleBean) VolleyResponseHelper
                     .jsonToBean(jsonObject, 6);
             if (rb1.getRetCode() == 0) {
                 listData = (NewsListBean) rb1.getRetObj();
-               if(listData!=null&&listData.getNewsList()!=null&&listData.getNewsList().size()!=0){
-                // 判断是否需要到底部自动加载
-                mAdapter = new FramgentNewsAdapter(listData, getActivity());
-                if (Integer.valueOf(URLHelper.PAGESIZE) > listData
-                        .getNewsList().size()) {
-                    mAdapter.setCanLoadMore(false);
-                    mAdapter.setFooterShow(true);
+                if (listData != null && listData.getNewsList() != null && listData.getNewsList().size() != 0) {
+                    // 判断是否需要到底部自动加载
+                    mAdapter = new FramgentNewsAdapter(listData, getActivity());
+                    if (Integer.valueOf(URLHelper.PAGESIZE) > listData
+                            .getNewsList().size()) {
+                        mAdapter.setCanLoadMore(false);
+                        mAdapter.setFooterShow(true);
+                    } else {
+                        mAdapter.setCanLoadMore(true);
+                    }
+                    loadedfromcache = true;
+                    mAdapter.setOnItemClickListener(myListener);
+                    mRecyclerView.setAdapter(mAdapter);
+
+                    showView(3);
                 } else {
-                    mAdapter.setCanLoadMore(true);
+                    showView(1);
                 }
-                loadedfromcache = true;
-                mAdapter.setOnItemClickListener(myListener);
-                mRecyclerView.setAdapter(mAdapter);
-            }}
-            if (listData != null&&listData.getNewsList()!=null)
+            }
+            if (listData != null && listData.getNewsList() != null)
                 if (listData.getNewsList().size() == 0) {
                     showView(1);
                 } else {
@@ -206,26 +211,23 @@ public class FragmentNewsList extends BaseFragment implements SwipeRefreshLayout
                         .jsonToBean(response, 6);
                 if (rb1.getRetCode() == 0) {
                     listData = (NewsListBean) rb1.getRetObj();
-                    if(listData!=null&&(listData.getNewsList().size()!=0)){
-                    DiskDataHelper.getInstance().saveListToCache("fragment_newslist", response);
-                    // 判断是否需要到底部自动加载
-                    mAdapter = new FramgentNewsAdapter(listData, getActivity());
-                    if (Integer.valueOf(URLHelper.PAGESIZE) > listData
-                            .getNewsList().size()) {
-                        mAdapter.setCanLoadMore(false);
-                        mAdapter.setFooterShow(true);
-                    } else {
-                        mAdapter.setCanLoadMore(true);
-                    }
-                    mAdapter.setOnItemClickListener(myListener);
-                    mRecyclerView.setAdapter(mAdapter);
-                }}
-                if (listData != null)
-                    if (listData.getNewsList().size() == 0) {
-                        showView(1);
-                    } else {
+                    if (listData != null && listData.getNewsList() != null && (listData.getNewsList().size() != 0)) {
+                        DiskDataHelper.getInstance().saveListToCache("fragment_newslist_" + type, response);
+                        // 判断是否需要到底部自动加载
+                        mAdapter = new FramgentNewsAdapter(listData, getActivity());
+                        if (Integer.valueOf(URLHelper.PAGESIZE) > listData
+                                .getNewsList().size()) {
+                            mAdapter.setCanLoadMore(false);
+                            mAdapter.setFooterShow(true);
+                        } else {
+                            mAdapter.setCanLoadMore(true);
+                        }
+                        mAdapter.setOnItemClickListener(myListener);
+                        mRecyclerView.setAdapter(mAdapter);
                         showView(3);
-                    }
+                    }else{showView(1);}
+                }
+
 
                 break;
             case 2:
