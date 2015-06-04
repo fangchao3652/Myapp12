@@ -50,12 +50,12 @@ public class MqttNotifier {
               	n.flags |= Notification.FLAG_AUTO_CANCEL;
 
                 n.defaults = Notification.DEFAULT_ALL;
-              	
+
         		n.icon = com.tokudu.demo.R.drawable.logo;
         		n.when = System.currentTimeMillis();
 
         		// Simply open the parent activity
-        		
+
         		// Change the name of the notification here
         		n.setLatestEventInfo(context, mBean.getTitle(), mBean.getContent(), getDefalutIntent(context,mBean));
 
