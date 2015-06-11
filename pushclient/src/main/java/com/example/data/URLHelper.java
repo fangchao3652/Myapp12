@@ -21,7 +21,8 @@ import java.util.TreeMap;
  */
 public class URLHelper {
 
-    public static final String BALSEURL = "http://115.28.131.31:81/api/";
+    public static final String BALSEURL = "http://172.28.1.9:81/api/";
+    //public static final String BALSEURL = "http://115.28.131.31:81/api/";
     //public static final String BALSEURL = "http://hagal.theadventus.com/MEASystem/api/";
     // public static final String BALSEURL ="http://10.1.108.131/api/student/";
 

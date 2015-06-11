@@ -16,7 +16,7 @@ public class Constants {
     /**
      * 是否开发模式上线时设置为false
      */
-    public static final boolean ISDEBUG = false;
+    public static final boolean ISDEBUG = true;
     /**
      * 友盟统计的开关上线时设置为false
      */

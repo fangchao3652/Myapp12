@@ -99,7 +99,7 @@ public class CourseActivity extends BaseActionBarActivity implements DataHelper.
         // 数据
         dialog.show();
         //http://192.168.3.12:8080/MyService/servlet/courseServlet
-        DataHelper piclist = new PostDataHelper("http://115.28.131.31:81/api/student/GetCourseList",
+        DataHelper piclist = new PostDataHelper(URLHelper.BALSEURL+"student/GetCourseList",
                 URLHelper.getCourseListParams(memberId, week), this, tag);
         piclist.execute();
     }

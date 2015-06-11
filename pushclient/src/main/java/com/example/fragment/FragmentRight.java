@@ -95,7 +95,7 @@ public class FragmentRight extends Fragment implements DataHelper.DataListener {
             personYesV.setVisibility(View.VISIBLE);
             // 赋值
             //fc
-            bean.setImageUrl("http://img4.imgtn.bdimg.com/it/u=241944428,4078451778&fm=21&gp=0.jpg");
+          //  bean.setImageUrl("http://img4.imgtn.bdimg.com/it/u=241944428,4078451778&fm=21&gp=0.jpg");
             if (StringUtils.isBlank(bean.getImageUrl())) {
                 headImgV.setBackgroundResource(R.drawable.face_big_normal);
                 headImgV.setImageResource(R.drawable.face_big_normal);

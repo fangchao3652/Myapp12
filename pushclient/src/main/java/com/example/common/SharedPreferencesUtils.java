@@ -164,6 +164,8 @@ public class SharedPreferencesUtils {
         boolean editflg = false;
         mEditor.putString(LOGIN_USER_NAME, uBean.getSName());
         mEditor.putString(LOGIN_USER_ID, uBean.getMemberId());
+        if(!StringUtils.isBlank(uBean.getImageUrl()))
+        mEditor.putString(LOGIN_USER_HEAD, uBean.getImageUrl());
         if (!StringUtils.isBlank(uBean.getMemberPwd())) {
             mEditor.putString(LOGIN_USER_PWD, uBean.getMemberPwd());
         }
@@ -199,7 +201,7 @@ public class SharedPreferencesUtils {
         uBean.setSName(sharedPreferences.getString(LOGIN_USER_NAME, ""));
         uBean.setMemberId(sharedPreferences.getString(LOGIN_USER_ID, ""));
         uBean.setMemberPwd(sharedPreferences.getString(LOGIN_USER_PWD, ""));
-
+uBean.setImageUrl(sharedPreferences.getString(LOGIN_USER_HEAD, ""));
         Set<String> defStringsault = new TreeSet<>();
         defStringsault.add("Fangchao");
         Set set = sharedPreferences.getStringSet(LOGIN_USER_Topiclist, defStringsault);

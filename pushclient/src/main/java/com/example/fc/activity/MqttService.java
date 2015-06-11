@@ -16,12 +16,14 @@ import android.provider.Settings.Secure;
 import android.util.Log;
 
 import com.example.Bean.UserBean;
+import com.example.common.CommonUtils;
 import com.example.common.Constants;
 import com.example.common.SharedPreferencesUtils;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -30,6 +32,7 @@ import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -47,13 +50,13 @@ public class MqttService extends Service implements MqttCallback {
     private static final int MQTT_KEEP_ALIVE_QOS = MQTT_QOS_0; //心跳包的发送级别默认最低
     public static final int MQTT_QOS_1 = 1; //消息投放级别 QOS Level 1 (至少一次，有可能重复。 )
     public static final int MQTT_QOS_2 = 2; //消息投放级别 QOS Level 2 (只有一次，确保消息只到达一次（用于比较严格的计费系统）。)
-    private static final String MQTT_BROKER_TEST = Constants.ISDEBUG? "192.168.3.12":"115.28.131.31"; //测试地址@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+    private static final String MQTT_BROKER_TEST = Constants.ISDEBUG ? "172.28.1.1" : "115.28.131.31"; //测试地址@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
     private static final String MQTT_BROKER = MQTT_BROKER_TEST;
     private static final int MQTT_PORT = 1883;                // 服务器推送端口
-    private static final int MQTT_KEEP_ALIVE = 1 * 60 * 1000; //心跳包时间，毫秒
+    private static final int MQTT_KEEP_ALIVE = 60 * 60 * 1000; //心跳包时间，毫秒
     private static final String MQTT_KEEP_ALIVE_TOPIC_FORAMT = "/users/%s/keepalive"; // Topic format for KeepAlives
     private static final byte[] MQTT_KEEP_ALIVE_MESSAGE = {0}; // 心跳包发送内容
-    private static final boolean MQTT_CLEAN_SESSION = true; // Start a clean session?
+    private static final boolean MQTT_CLEAN_SESSION = false; // Start a clean session?
     private static final String MQTT_URL_FORMAT = "tcp://%s:%d"; // 推送url格式组装
     private static final String DEVICE_ID_FORMAT = "an_%s"; // 设备id的前缀
     public static String[] topicFilters = {"Fangchao"};//订阅的主题    全局主题           @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
@@ -62,17 +65,15 @@ public class MqttService extends Service implements MqttCallback {
     private static final String ACTION_STOP = MQTT_CLIENT_ID + ".STOP"; // Action to stop 停止
     private static final String ACTION_KEEPALIVE = MQTT_CLIENT_ID + ".KEEPALIVE"; // Action to keep alive used by alarm manager保持心跳闹钟使用
     private static final String ACTION_RECONNECT = MQTT_CLIENT_ID + ".RECONNECT"; // Action to reconnect 重新连接
+    MqttConnectOptions options;
     // Note:设备id限制长度为23个 字符
     // An NPE if you go over that limit
     private boolean mStarted = false; //推送client是否启动
     private String mDeviceId;          // Device ID, Secure.ANDROID_ID
     private Handler mConnHandler;      // Seperate Handler thread for networking
-
+    //    private MqttConnectOptions mOpts;            //连接参数
     private MqttDefaultFilePersistence mDataStore; // Defaults to FileStore
-//    private MqttConnectOptions mOpts;            //连接参数
-
     private MqttTopic mKeepAliveTopic;            // Instance Variable for Keepalive topic
-
     private MqttClient mClient;                    // Mqtt Client
     /**
      * 网络状态发生变化接收器
@@ -133,16 +134,16 @@ public class MqttService extends Service implements MqttCallback {
         return topicFilters;
     }
 
+    public static void setTopicFilters(String[] topicFilters) {
+        MqttService.topicFilters = topicFilters;
+    }
+
     public static int[] getQos() {
         return qos;
     }
 
     public static void setQos(int[] qos) {
         MqttService.qos = qos;
-    }
-
-    public static void setTopicFilters(String[] topicFilters) {
-        MqttService.topicFilters = topicFilters;
     }
 
     public static String[] AddTopic(String topic) {
@@ -161,6 +162,28 @@ public class MqttService extends Service implements MqttCallback {
         SharedPreferencesUtils.getInstance().editUserMessage(u);//添加到本地
         topicFilters = topiclist.toArray(topicFilters);
         return topicFilters;
+    }
+
+    /**
+     * 检测安静时段
+     *
+     * @return
+     */
+    private boolean checkQuiteTime() {
+        int startTime = SharedPreferencesUtils.getInstance().getPushStarttime();
+        int lastTime = SharedPreferencesUtils.getInstance().getLastTime();
+        Calendar calendar = Calendar.getInstance();
+        int hours = calendar.get(Calendar.HOUR_OF_DAY);
+        if (startTime + lastTime >= 24) {
+            if (hours >= startTime) {
+                return true;
+            } else if (hours <= startTime + lastTime - 24) {
+                return true;
+            }
+        } else if (hours >= startTime && hours < startTime + lastTime) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -185,8 +208,8 @@ public class MqttService extends Service implements MqttCallback {
         mDataStore = new MqttDefaultFilePersistence(getCacheDir().getAbsolutePath());
 
 
-        // mOpts = new MqttConnectOptions();
-        // mOpts.setCleanSession(MQTT_CLEAN_SESSION);
+        options = new MqttConnectOptions();
+        options.setCleanSession(MQTT_CLEAN_SESSION);
         // Do not set keep alive interval on mOpts we keep track of it with alarm's
 
         mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -309,20 +332,21 @@ public class MqttService extends Service implements MqttCallback {
                 public void run() {
                     try {
                         if (mClient != null) {
-                            mClient.connect();
+                            mClient.connect(options);
                             //fc
                             topicFilters = castSet2Array(SharedPreferencesUtils.getInstance().getUserMessage().getTopicList());
-                            if(topicFilters!=null){
-                            mClient.subscribe(topicFilters, new int[topicFilters.length]);
+                            if (topicFilters != null) {
+                                mClient.subscribe(topicFilters, new int[topicFilters.length]);
 
-                            mClient.setCallback(MqttService.this);
+                                mClient.setCallback(MqttService.this);
 
-                            mStarted = true; // Service is now connected
+                                mStarted = true; // Service is now connected
 
-                            Log.e(DEBUG_TAG, "成功连接推送服务器并启动心跳包闹钟");
+                                Log.e(DEBUG_TAG, "成功连接推送服务器并启动心跳包闹钟");
 
-                            startKeepAlives();
-                        }}
+                                startKeepAlives();
+                            }
+                        }
                     } catch (MqttException e) {
                         e.printStackTrace();
                     }
@@ -387,14 +411,14 @@ public class MqttService extends Service implements MqttCallback {
             } catch (Exception e) {
                 Log.e("exception", "aaaaaaaaaaa");
             }
-        }
-        else {
+        } else {
             if (isNetworkAvailable()) {
                 connect();
             } else {
                 startKeepAlives();
             }
-    }}
+        }
+    }
 
     /**
      * 重新连接如果他是必须的
@@ -511,19 +535,25 @@ public class MqttService extends Service implements MqttCallback {
         Log.e(DEBUG_TAG, "收到推送信息如下\n  Topic:\t" + topic +
                 "  Message:\t" + new String(mqttMessage.getPayload()) +
                 "  QoS:\t" + mqttMessage.getQos());
+        if (!checkQuiteTime()) {
+            MqttNotifier.notify(this, new String(mqttMessage.getPayload()));//fc
+        } else {
+            CommonUtils.logWrite(DEBUG_TAG, "当前为安静时段，不进行信息提示");
+        }
 
-        com.example.fc.activity.MqttNotifier.notify(this, new String(mqttMessage.getPayload()));//fc
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
         Log.e(DEBUG_TAG, "推送回调函数deliveryComplete方法执行");
     }
+
     @Override
     public void onDestroy() {
         stopForeground(true);
         super.onDestroy();
     }
+
     /**
      * MqttConnectivityException Exception class
      */

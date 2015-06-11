@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.Bean.BannerBean;
 import com.example.R;
@@ -33,7 +34,8 @@ public class FragmentBanner extends BaseFragment {
     SimpleDraweeView imgView;
     @ViewById(R.id.banner_item_img_no)
     ImageView imgNoV;
-
+@ViewById(R.id.tv_title)
+    TextView tv_title;
     @AfterViews
     void initView() {
         // 给view设置值
@@ -52,6 +54,7 @@ public class FragmentBanner extends BaseFragment {
             }
             if(bean.getImageUrl()!=null)
             imgView.setImageURI(Uri.parse(bean.getImageUrl()));
+            tv_title.setText(bean.getTitle());
         }
     }
 
